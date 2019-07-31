@@ -1,3 +1,7 @@
+/*! \file grid.hpp
+ *  \brief Header containing the class for the computational grid
+ */
+
 #ifndef EV_GRID_HPP
 #define EV_GRID_HPP
 
@@ -6,21 +10,26 @@
 
 #include "motherbase.hpp"
 
+/*! \class Grid
+ *  \brief Class storing the computational grid
+ *
+ *  The present code only supports a simple rectangular geometry
+ */
 class Grid : protected Motherbase
 {
 
 private:
 
-  int n_cells_x, n_cells_y;                         /*!< Number of computational cells in each direction */
+  int n_cells_x, n_cells_y;                         // Number of computational cells in each direction
   int n_cells;
-  real_number x_min, x_max, y_min, y_max;           /*!< Domain limits (whole 'logical' domain) */
-  real_number x_extra, y_extra;                     /*!< Extra buffer between 'logical' and 'physical' domain (dimension) */
-  real_number dx, dy;                               /*!< Meshwidth (and meshwidth^-1) */
+  real_number x_min, x_max, y_min, y_max;           // Domain limits (whole 'logical' domain)
+  real_number x_extra, y_extra;                     // Extra buffer between 'logical' and 'physical' domain (dimension)
+  real_number dx, dy;                               // Meshwidth (and meshwidth^-1)
   real_number rdx, rdy;
-  real_number x_lim_p, x_lim_m, y_lim_p, y_lim_m;   /*!< Width of the buffer between walls and last position (dep. on boundary conditions) */
+  real_number x_lim_p, x_lim_m, y_lim_p, y_lim_m;   // Width of the buffer between walls and last position (dep. on boundary conditions)
   real_number channel_section;
-  real_number cell_volume;                          /*!< Volume of the computational cell */
-  std::valarray<real_number> xc, yc;                /*!< Centroids */
+  real_number cell_volume;                          // Volume of the computational cell
+  std::valarray<real_number> xc, yc;                // Centroids
 
 public:
 
@@ -38,8 +47,6 @@ public:
     int i = idx - j * n_cells_x;
     return std::make_pair(i, j);
   }
-
-  // 'Getter' (and implicitly 'setter') methods ...
 
   inline const real_number& get_dx(void) const { return dx; }
   inline const real_number& get_dy(void) const { return dy; }

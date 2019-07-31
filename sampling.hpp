@@ -34,8 +34,35 @@ public:
   void sample(void);
   void average(void);
 
-  const ev_matrix::MaskMatrix<real_number>& get_temp_avg(void) const { return temp_avg; }
-  ev_matrix::MaskMatrix<real_number>& get_temp_avg(void) { return temp_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_vx_avg(void) const { return vx_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_vx_avg(void) { return vx_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_vy_avg(void) const { return vy_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_vy_avg(void) { return vy_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_vz_avg(void) const { return vz_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_vz_avg(void) { return vz_avg; }
+
+  inline const ev_matrix::MaskMatrix<real_number>& get_temp_avg(void) const { return temp_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_temp_avg(void) { return temp_avg; }
+
+  inline const ev_matrix::MaskMatrix<real_number>& get_pxx_avg(void) const { return pxx_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_pxx_avg(void) { return pxx_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_pyy_avg(void) const { return pyy_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_pyy_avg(void) { return pyy_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_pzz_avg(void) const { return pzz_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_pzz_avg(void) { return pzz_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_pxy_avg(void) const { return pxy_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_pxy_avg(void) { return pxy_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_pxz_avg(void) const { return pxz_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_pxz_avg(void) { return pxz_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_pyz_avg(void) const { return pyz_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_pyz_avg(void) { return pyz_avg; }
+
+  inline const ev_matrix::MaskMatrix<real_number>& get_qx_avg(void) const { return qx_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_qx_avg(void) { return qx_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_qy_avg(void) const { return qy_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_qy_avg(void) { return qy_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_qz_avg(void) const { return qz_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_qz_avg(void) { return qz_avg; }
 
 };
 

@@ -87,17 +87,34 @@ Output::output_collisions
 
 }
 
-// DEBUG
+void
+Output::output_collisions_stat
+(void)
+{
 
+  std::ofstream file1("output_files/collision_stat.txt");
+  int n = collision_handler->get_n_fake_store().size();
+  /* TOTAL | REAL | FAKE | OUT */
+  for ( int i = 0; i<n; ++i )
+  {
+    file1 << collision_handler->get_n_total_store()[i] << "\t" << collision_handler->get_n_real_store()[i] << "\t"
+      << collision_handler->get_n_fake_store()[i] << "\t" << collision_handler->get_n_out_store()[i] << "\n";
+  }
+  file1.close();
+
+}
+
+
+// DEBUG
+// # # # # #
 void
 Output::output_fun_vec
 (const std::vector<real_number>& x, const std::vector<real_number>& y)
 {
-
   std::ofstream file1("output_files/fun_vec.txt");
   int n = x.size();
   for (int i = 0; i<n; ++i)
     file1 << x[i] << "\t" << y[i] << "\n";
   file1.close();
-
 }
+// # # # # #

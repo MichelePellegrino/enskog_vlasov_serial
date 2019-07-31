@@ -1,3 +1,7 @@
+/*! \file particles.hpp
+ *  \brief Header containing the structures to store particle and ensemble properties
+ */
+
 #ifndef EV_PARTICLES_HPP
 #define EV_PARTICLES_HPP
 
@@ -16,8 +20,6 @@ struct Particle
   int p_tag;
 };
 
-// NB CLEAN THE CODE AND REMOVE UNUSED BUFFERS
-
 /*! \class Ensemble
  *  \brief A class for an ensemble of particles
  */
@@ -26,11 +28,11 @@ class Ensemble : protected Motherbase
 
 private:
 
-  int n_particles;                    /*!< Total number of particles */
+  int n_particles;                    // Total number of particles
   real_number T_ini;
   real_number mass;
 
-  std::vector<Particle> particles;    /*!< Local vector of particles */
+  std::vector<Particle> particles;    // Local vector of particles
 
   /*! \fn populate
    *  \brief Randomly populate the phase space
@@ -42,14 +44,14 @@ public:
   Ensemble(DSMC*);
   ~Ensemble() = default;
 
-  /* FOR TESTING */
+  /* *** TESTING *** */
   /*! \fn test_stream
    *  \brief Tests particle streaming: periodic b.c. on every edge
    */
   void test_stream(real_number dt = 0.1);
 
-  /* UTILITIES */
-  // void save_to_file(const std::string&) const;
+  /* UTILITIES (unused) */
+  // void save_to_file(const DefaultString&) const;
 
   // Parameter getters
   inline const int& get_n_particles(void) const { return n_particles; }

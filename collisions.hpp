@@ -27,6 +27,12 @@ private:
   int n_real = 0;
   int n_total = 0;
 
+  // Vectors for storage
+  std::vector<int> n_fake_store;
+  std::vector<int> n_real_store;
+  std::vector<int> n_total_store;
+  std::vector<int> n_out_store;
+
   ev_matrix::MaskMatrix<real_number> a11;               // Init. = 0.0 (A_i); as many as no. cells
   ev_matrix::MaskMatrix<real_number> vrmax11;           // Max relative speed (C_i); as many as no. cells
 
@@ -85,6 +91,11 @@ public:
   inline const ev_matrix::MaskMatrix<real_number>& get_a11(void) const { return a11; }
   inline const ev_matrix::MaskMatrix<real_number>& get_vrmax11(void) const { return vrmax11; }
   inline const ev_matrix::MaskMatrix<int>& get_n_coll_cell(void) const { return n_coll_cell; }
+
+  inline const std::vector<int>& get_n_fake_store(void) const { return n_fake_store; }
+  inline const std::vector<int>& get_n_real_store(void) const { return n_real_store; }
+  inline const std::vector<int>& get_n_total_store(void) const { return n_total_store; }
+  inline const std::vector<int>& get_n_out_store(void) const { return n_out_store; }
 
 };
 

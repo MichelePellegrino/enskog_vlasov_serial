@@ -1,8 +1,8 @@
 #include "potential.hpp"
 
 SutherlandMie::SutherlandMie
-(real_number phi, real_number hsigma, real_number gamma):
-  pot_well(phi), mol_radius(hsigma), exponent(gamma)
+(real_number phi, real_number sigma, real_number gamma):
+  pot_well(phi), mol_diam(sigma), exponent(gamma)
   {
     set_potential();
     set_dpotential_dr();
@@ -14,7 +14,7 @@ SutherlandMie::set_potential
 (void)
 {
   potential = [this](real_number r) -> real_number {
-    return -pot_well*std::pow((mol_radius/r), exponent);
+    return -pot_well*std::pow((mol_diam/r), exponent);
   };
 }
 
@@ -37,8 +37,8 @@ SutherlandMie::set_pot_kernel
 }
 
 SutherlandMorse::SutherlandMorse
-(real_number phi, real_number hsigma, real_number a):
-  pot_well(phi), mol_radius(hsigma), alpha(a)
+(real_number phi, real_number sigma, real_number a):
+  pot_well(phi), mol_diam(sigma), alpha(a)
   {
     set_potential();
     set_dpotential_dr();
@@ -50,7 +50,7 @@ SutherlandMorse::set_potential
 (void)
 {
   potential = [this](real_number r) -> real_number {
-    return -pot_well*exp(-alpha*(r-mol_radius));
+    return -pot_well*exp(-alpha*(r-mol_diam));
   };
 }
 

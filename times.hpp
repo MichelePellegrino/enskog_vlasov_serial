@@ -1,8 +1,18 @@
+/*! \file times.hpp
+ *  \brief Header containing data for time-advancing
+ */
+
 #ifndef EV_TIMES_HPP
 #define EV_TIMES_HPP
 
 #include <vector>
 
+/*! \class Times
+ *  \brief Class storing data for time-advancing
+ *
+ *  THIS COULD ACTUALLY BE REMOVED: TIME STEPS AND NO. OF ITERATIONS MAY BE
+ *  STORED LOCALLY IN OTHER MODULES, WHEN NEEDED
+ */
 class Times
 {
 

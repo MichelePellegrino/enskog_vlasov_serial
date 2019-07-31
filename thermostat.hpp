@@ -1,3 +1,7 @@
+/*! \file thermostat.hpp
+ *  \brief Header containing a class implementing the thermostat
+ */
+
 #ifndef EV_THERMOSTAT_HPP
 #define EV_THERMOSTAT_HPP
 

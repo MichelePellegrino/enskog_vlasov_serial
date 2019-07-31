@@ -5,7 +5,7 @@ int main()
 
 try
 {
-  DSMC my_dsmc_instanziation("input_files/drop_par.dat.txt");
+  DSMC my_dsmc_instanziation("input_files/drop_par0.dat.txt");
 }
 catch(const char* ex)
 {

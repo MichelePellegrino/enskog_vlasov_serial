@@ -1,3 +1,7 @@
+/*! \file matrix.hpp
+ *  \brief Header containing classes for mask matrices
+ */
+
 #ifndef EV_MASK_MATRIX_HPP
 #define EV_MASK_MATRIX_HPP
 
@@ -6,25 +10,30 @@
 #include <array>
 #include <algorithm>
 
-#define TL 0    /*!< top-left       */
-#define CL 1    /*!< centre-left    */
-#define BL 2    /*!< bottom-left    */
-#define BC 3    /*!< bottom-centre  */
-#define BR 4    /*!< bottom-right   */
-#define CR 5    /*!< centre-right   */
-#define TR 6    /*!< top-right      */
-#define TC 7    /*!< top-center     */
+#define TL 0    // top-left
+#define CL 1    // centre-left
+#define BL 2    // bottom-left
+#define BC 3    // bottom-centre
+#define BR 4    // bottom-right
+#define CR 5    // centre-right
+#define TR 6    // top-right
+#define TC 7    // top-center
 
-#define N_BUF 8   /*!< total number of buffers */
+#define N_BUF 8 // total number of buffers
 
+/*! \namespace ev_matrix
+ *  \brief A namespace containing classes for data storage
+ *
+ *  This namespace contains a mask-matrix class, from which slider-matrix and
+ *  halo-matrix classes inherit; moreover a matrix direct convolutioner is defined
+ */
 namespace ev_matrix {
 
   using namespace Eigen;
 
-  // ###################################################################### //
-  // ##### MASK MATRIX #################################################### //
-  // ###################################################################### //
-
+  /*! \class MaskMatrix
+   *  \brief A matrix with (occasionally) negative indices
+   */
   template <class data_type, int StorageOrder = RowMajor>
   class MaskMatrix : public Array<data_type, Dynamic, Dynamic, StorageOrder>
   {
@@ -33,14 +42,8 @@ namespace ev_matrix {
     typedef Block<const DynamicMatrix> constDynamicBlock;
     int low_x, up_x, low_y, up_y;
     // Index transformations
-    inline int idx_i(const int& i) const
-    {
-      return i - low_x;
-    }
-    inline int idx_j(const int& j) const
-    {
-      return j - low_y;
-    }
+    inline int idx_i(const int& i) const { return i - low_x; }
+    inline int idx_j(const int& j) const { return j - low_y; }
   public:
     MaskMatrix ( int lx, int ux, int ly, int uy ):
       DynamicMatrix(ux-lx, uy-ly), low_x(lx), up_x(ux), low_y(ly), up_y(uy)
@@ -96,7 +99,7 @@ namespace ev_matrix {
       DynamicMatrix::operator=(rhs);
       return *this;
     }
-    // Copy-cast
+    // Copy-cast operation
     template <class rhs_type>
     MaskMatrix<data_type>& copy_cast (const MaskMatrix<rhs_type>& rhs)
     {
@@ -110,10 +113,9 @@ namespace ev_matrix {
     }
   };
 
-  // ###################################################################### //
-  // ##### SLIDE MATRIX ################################################### //
-  // ###################################################################### //
-
+  /*! \class SlideMaskMatrix
+   *  \brief A mask matrix that needs to be centered around a point (e.g. convolution kernel)
+   */
   template <class data_type, int StorageOrder = RowMajor>
   class SlideMaskMatrix : public MaskMatrix<data_type, StorageOrder>
   {
@@ -134,28 +136,27 @@ namespace ev_matrix {
     inline int get_n_cut_y(void) const { return n_cut_y; }
   };
 
-  // ###################################################################### //
-  // ##### HALO MATRIX #################################################### //
-  // ###################################################################### //
-
   static constexpr std::array<int,N_BUF> reflect_map = {4, 5, 6, 7, 0, 1, 2, 3};
   static inline int reflect_idx(const int& r)
   {
     return reflect_map[r];
   }
 
+  /*! \class HaloMaskMatrix
+   *  \brief A mask matrix with the functionality of storing data in a external halo
+   */
   template <class data_type, int StorageOrder = RowMajor>
   class HaloMaskMatrix : public MaskMatrix<data_type, StorageOrder>
   {
   protected:
     typedef MaskMatrix<data_type,StorageOrder> Base;
     typedef typename Base::DynamicMatrix DynamicMatrix;
-    int n_halo_x;       /*!< Number of cut-off cells in the x_dir */
-    int n_halo_y;       /*!< Number of cut-off cells in the y_dir */
-    int ux_recv[N_BUF], lx_recv[N_BUF];   /*!< Upper and lower x-indices of receiving blocks */
-    int uy_recv[N_BUF], ly_recv[N_BUF];   /*!< Upper and lower y-indices of receiving blocks */
-    int ux_send[N_BUF], lx_send[N_BUF];   /*!< Upper and lower x-indices of sending blocks */
-    int uy_send[N_BUF], ly_send[N_BUF];   /*!< Upper and lower y-indices of sending blocks */
+    int n_halo_x;   // Number of cut-off cells in the x_dir
+    int n_halo_y;   // Number of cut-off cells in the y_dir
+    int ux_recv[N_BUF], lx_recv[N_BUF]; // Upper and lower x-indices of receiving blocks
+    int uy_recv[N_BUF], ly_recv[N_BUF]; // Upper and lower y-indices of receiving blocks
+    int ux_send[N_BUF], lx_send[N_BUF]; // Upper and lower x-indices of sending blocks
+    int uy_send[N_BUF], ly_send[N_BUF]; // Upper and lower y-indices of sending blocks
     void inline set_schema()
     {
       // OUTER BUFFER [0]
@@ -208,7 +209,7 @@ namespace ev_matrix {
       ux_send[TC] = Base::low_x+2*n_halo_x;   uy_send[TC] = Base::up_y-n_halo_y;
     }
   public:
-    // CONSTRUCTOR
+    // Constructors
     HaloMaskMatrix( const MaskMatrix<data_type>& data_, int nc ):
       MaskMatrix<data_type>(data_), n_halo_x(nc), n_halo_y(nc)
       {
@@ -243,10 +244,9 @@ namespace ev_matrix {
     int get_n_halo_y(void) const { return n_halo_y; }
   };
 
-  // ###################################################################### //
-  // ##### CONVOLUTIONER ################################################## //
-  // ###################################################################### //
-
+  /*! \class MatrixConvolutioner
+   *  \brief A class performing matrix convolutions
+   */
   template <class data_type>
   class MatrixConvolutioner
   {
@@ -263,7 +263,7 @@ namespace ev_matrix {
     int ly;
     int ux;
     int uy;
-    data_type def;            // e.g. const real_number default = 0.0
+    data_type def;  // e.g. const real_number default = 0.0
     data_type temp_result;
   public:
     MatrixConvolutioner(MaskMatrix<data_type>& r, const SlideMaskMatrix<data_type>& s,
@@ -287,7 +287,9 @@ namespace ev_matrix {
     }
     void convolute(int i, int j)
     {
-      // TIME WHICH ONE IS BETTER ...
+      // *** TEST ***
+      // Is it more efficient to perform hard-coded pointwise multiplication and
+      // reduction or use instead Eigen block functionality?
       /*
       temp_result = def;
       for ( int ii = -n_cut_x; ii<=n_cut_x; ++ii )

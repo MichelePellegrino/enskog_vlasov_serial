@@ -25,14 +25,27 @@ public:
 
   // Output sample
   template <class data_type>
-  void output_sample(ev_matrix::MaskMatrix<data_type>& sample, const std::string& file_name)
+  void output_sample(ev_matrix::MaskMatrix<data_type>& sample, const DefaultString& file_name)
   {
     std::ofstream file1(file_name);
     file1 << sample;
     file1.close();
   }
 
-  // Output fucntion form vectors
+  // Output sample, with label
+  template <class data_type, class tag_type>
+  void output_sample(ev_matrix::MaskMatrix<data_type>& sample, const DefaultString& file_name, tag_type label)
+  {
+    DefaultString file_name_tag = file_name + "_t=" + std::to_string(label) + ".txt";
+    std::ofstream file1(file_name_tag);
+    file1 << sample;
+    file1.close();
+  }
+
+  // Output collisions statistics
+  void output_collisions_stat(void);
+
+  // Output function form vectors
   void output_fun_vec(const std::vector<real_number>&,
     const std::vector<real_number>&);
 

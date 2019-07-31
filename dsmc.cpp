@@ -42,8 +42,7 @@ density (
   new DensityKernel(this)
 ),
 potential (
-  new SutherlandMie(conf->get_phi11(), (conf->get_diam_fluid()),
-    conf->get_gamma11())
+  new SutherlandMie(conf->get_phi11(), conf->get_diam_fluid(), conf->get_gamma11())
 ),
 mean_field (
   new ForceField(this)
@@ -62,37 +61,50 @@ output (
 ),
 correlation ()
 {
-  // GENERIC TESTING
-  /*
-  mean_field->testing_output_kernel_function(500);
-  test_boundary_info();
-  test_thermostat();
-  test_density();
-  test_force_field();
-  test_time_marching();
-  test_density();
-  test_collisions();
-  test_sampling();
-  */
+
+  // *** PRELIMINARY TESTING ***
+  // # # # # #
+  // test_species_info();
+  // mean_field->testing_output_kernel_function(500);
+  // mean_field->testing_output_kernel_profile(500, 1.0);
+  // test_boundary_info();
+  // test_density();
+  // test_force_field();
+  // test_thermostat();
+  // test_time_marching();
+  // test_density();
+  // test_collisions();
+  // test_sampling();
+  // # # # # #
+
+  // *** TESTING A FEW DSMC ITERATIONS TO SPOT EVIDENT BUGS ***
   std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
   initialize_simulation();
-  int dummy_max_iter = 3;
+  test_output();
+  int dummy_max_iter = 21;
   for (int t = 0; t < dummy_max_iter; ++t)
   {
-    std::cout << "    iter = " << t << std::endl;
+    std::cout << " >> iter = " << t << std::endl;
     dsmc_iteration();
-    std::cout << "    applying thermostat" << t << std::endl;
-    thermostat->rescale_velocity();
+    if (t%n_iter_thermo==0)
+    {
+      std::cout << "    applying thermostat ..." << std::endl;
+      thermostat->rescale_velocity();
+    }
+    if (t%n_iter_sample==0)
+    {
+      std::cout << "    averaging ..." << std::endl;
+      sampler->average();
+      output_all_samples(t);
+      sampler->reset();
+    }
   }
-  sampler->average();
-  test_output();
-  output->output_sample(sampler->get_temp_avg(), "output_files/test_sample_temp.txt");
+  output->output_collisions_stat();
+
 }
 
 
-// # # # # # # # # # # # # # # # # # #
-// # # TESTING # # # # # # # # # # # #
-// # # # # # # # # # # # # # # # # # #
+// TESTING FUNCTIONALITIES
 
 void
 DSMC::test_boundary_info
@@ -110,6 +122,17 @@ DSMC::test_boundary_info
   std::cout << "x_lp = " << grid->get_xlp() << ";\ty_lp = " << grid->get_ylp() << std::endl;
   std::cout << "x_lm = " << grid->get_xlm() << ";\ty_lm = " << grid->get_ylm() << std::endl;
   std::cout << "cell_volume = " << grid->get_cell_volume() << std::endl;
+}
+
+void
+DSMC::test_species_info
+(void)
+{
+  std::cout << "### TEST: boundary info ###" << std::endl;
+  std::cout << "sigma_g = " << conf->get_diam_fluid() << std::endl;
+  std::cout << "mass_g = " << conf->get_mass_fluid() << std::endl;
+  std::cout << "phi_g = " << conf->get_phi11() << std::endl;
+  std::cout << "gamma_g = " << conf->get_gamma11() << std::endl;
 }
 
 void
@@ -181,15 +204,13 @@ DSMC::test_output
   output->output_collisions();
 }
 
-// # # # # # # # # # # # # # # # # # #
-// # # SIMULATION  # # # # # # # # # #
-// # # # # # # # # # # # # # # # # # #
+
+// DSMC SIMULATION STEPS
 
 void
 DSMC::initialize_simulation
 (void)
 {
-  // Initialize density field
   std::cout << "### INITIALIZINING DENSITY FIELD ###" << std::endl;
   density->binning();
   density->fill_dummy_field();
@@ -202,9 +223,10 @@ DSMC::dsmc_iteration
 (void)
 {
   std::cout << "### PERFORMING DSMC ITERATION ###" << std::endl;
-  /* THERE IS SOMETHING WRONG WITH THE MEAN-FIELD COMPUTATION... NEED TO FIND OUT... */
+  /*
   std::cout << "    computing force field ..." << std::endl;
   mean_field->compute_force_field();
+  */
   std::cout << "    propagating ensemble ..." << std::endl;
   time_marching->update_ensemble();
   std::cout << "    computing density ..." << std::endl;
@@ -219,5 +241,45 @@ void
 DSMC::dsmc_loop
 (void)
 {
-  // ...
+  // *** TO BE CONTINUED ... ***
+}
+
+void
+DSMC::output_all_samples
+(void)
+{
+  std::cout << "### OUTPUT ALL SAMPLES ###" << std::endl;
+  output->output_sample(sampler->get_vx_avg(), "output_files/samples/test_sample_vx.txt");
+  output->output_sample(sampler->get_vy_avg(), "output_files/samples/test_sample_vy.txt");
+  output->output_sample(sampler->get_vz_avg(), "output_files/samples/test_sample_vz.txt");
+  output->output_sample(sampler->get_temp_avg(), "output_files/samples/test_temp_avg.txt");
+  output->output_sample(sampler->get_pxx_avg(), "output_files/samples/test_sample_pxx.txt");
+  output->output_sample(sampler->get_pyy_avg(), "output_files/samples/test_sample_pyy.txt");
+  output->output_sample(sampler->get_pzz_avg(), "output_files/samples/test_sample_pzz.txt");
+  output->output_sample(sampler->get_pxy_avg(), "output_files/samples/test_sample_pxy.txt");
+  output->output_sample(sampler->get_pxz_avg(), "output_files/samples/test_sample_pxz.txt");
+  output->output_sample(sampler->get_pyz_avg(), "output_files/samples/test_sample_pyz.txt");
+  output->output_sample(sampler->get_qx_avg(), "output_files/samples/test_sample_qx.txt");
+  output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy.txt");
+  output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz.txt");
+}
+
+void
+DSMC::output_all_samples
+(real_number t)
+{
+  std::cout << "### OUTPUT ALL SAMPLES ###" << std::endl;
+  output->output_sample(sampler->get_vx_avg(), "output_files/samples/test_sample_vx", t);
+  output->output_sample(sampler->get_vy_avg(), "output_files/samples/test_sample_vy", t);
+  output->output_sample(sampler->get_vz_avg(), "output_files/samples/test_sample_vz", t);
+  output->output_sample(sampler->get_temp_avg(), "output_files/samples/test_temp_avg", t);
+  output->output_sample(sampler->get_pxx_avg(), "output_files/samples/test_sample_pxx", t);
+  output->output_sample(sampler->get_pyy_avg(), "output_files/samples/test_sample_pyy", t);
+  output->output_sample(sampler->get_pzz_avg(), "output_files/samples/test_sample_pzz", t);
+  output->output_sample(sampler->get_pxy_avg(), "output_files/samples/test_sample_pxy", t);
+  output->output_sample(sampler->get_pxz_avg(), "output_files/samples/test_sample_pxz", t);
+  output->output_sample(sampler->get_pyz_avg(), "output_files/samples/test_sample_pyz", t);
+  output->output_sample(sampler->get_qx_avg(), "output_files/samples/test_sample_qx", t);
+  output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy", t);
+  output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz", t);
 }

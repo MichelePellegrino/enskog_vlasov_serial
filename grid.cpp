@@ -68,7 +68,8 @@ Grid::Grid
       y_lim_p = boundary->get_Ly2() - species->get_diam_gw();
     }
     // Set cell volume (basic case)
-    /* TEMP: */
+    std::cout << "### SETTING CELL DEPTH ###" << std::endl;
+    std::cout << " >> npc = " << conf->get_n_part()/(double)n_cells << std::endl;
     // real_number channel_area = (x_lim_p-x_lim_m) * (y_lim_p-y_lim_m);
     real_number channel_area = (x_max-x_min) * (y_max-y_min);
     real_number dg = species->get_diam_fluid();

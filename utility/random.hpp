@@ -1,5 +1,5 @@
-/*! \file ev_random.hpp
- *  \brief Module containing random number generators
+/*! \file random.hpp
+ *  \brief Header containing random number generators
  */
 
 #ifndef EV_RANDOM
@@ -16,15 +16,10 @@
 #include <ctime>
 #include <cstdint>
 
-/*! \def DEFAULT_SEED
- *  \brief Default seed computed using __TIME__
- */
-#ifndef DEFAULT_SEED
 #define DEFAULT_SEED ( (__TIME__[7] - '0') * 1  + (__TIME__[6] - '0') * 10  + \
           (__TIME__[4] - '0') * 60   + (__TIME__[3] - '0') * 600 + \
           (__TIME__[1] - '0') * 3600 + (__TIME__[0] - '0') * 36000 ) + \
           (__LINE__ * 100000)
-#endif
 
 /*! \namespace ev_random
  *  \brief A namespace containing classes for RNG
@@ -34,8 +29,6 @@
  */
 namespace ev_random
 {
-
-// ABSTRACT RNG INTERFACE
 
 /*! \class RngAbstract
  *  \brief An abstract interface for RNG
@@ -106,13 +99,8 @@ public:
   inline virtual ~RngAbstract() {}
 };
 
-// STL RNG WRAPPER
-
 /*! \class StdRngObject
  *  \brief An wrapper for RNG form the Standard Template Library
- *
- *  This class contains the basic samplig function to be overridden as well as the
- *  definition of the algorithm for sampling a unit sphere and the Box_muller algorithm
  */
 template <class engineType = std::default_random_engine>
 class StdRngObject : public RngAbstract
@@ -242,9 +230,7 @@ private:
   static constexpr real_number AM = (1.0/IM);
   static constexpr int IQ = 127773;
   static constexpr int IR = 2836;
-  // int save;
-  // int second;
-  // WARMUP...?
+  // int save, second, warmup;
   void init(void)
   {
     if (seed < 0)
@@ -350,9 +336,6 @@ public:
   virtual ~CustomRngObject<Marsiglia>() { }
 };
 
-/*! \class CustomRngObject<Splitmix>
- *  \brief Implementation of Splitmix random engine
- */
 /*
 template<>
 class CustomRngObject<Splitmix> : public RngAbstract
@@ -385,9 +368,6 @@ public:
 };
 */
 
-/*! \class CustomRngObject<Xorshift64>
- *  \brief Implementation of Xorshift 64 random engine
- */
 /*
 template<>
 class CustomRngObject<Xorshift64> : public RngAbstract
@@ -417,7 +397,6 @@ public:
   virtual ~CustomRngObject<Xorshift64>() { }
 };
 */
-
 
 } /* namespace ev_random */
 

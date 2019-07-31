@@ -29,7 +29,7 @@ class SutherlandMie : public NondirectionalPairPotential
 {
   private:
     real_number pot_well;
-    real_number mol_radius;
+    real_number mol_diam;
     real_number exponent;
     virtual void set_potential(void) override;
     virtual void set_dpotential_dr(void) override;
@@ -43,7 +43,7 @@ class SutherlandMorse : public NondirectionalPairPotential
 {
   private:
     real_number pot_well;
-    real_number mol_radius;
+    real_number mol_diam;
     real_number alpha;
     virtual void set_potential(void) override;
     virtual void set_dpotential_dr(void) override;

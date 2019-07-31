@@ -17,6 +17,9 @@ using namespace ev_numeric;
 #define DUMMY_A -1
 #define DUMMY_B 1
 
+#define CUTOFF_Z 10
+#define ZERO_THRESHOLD 1e-4
+
 class ForceField : protected Motherbase
 {
 
@@ -27,7 +30,6 @@ private:
   real_number diamol;
   real_number dx, dy;
 
-  const real_number zero_threshold = 1.0e-4;
   real_number dist2 = 0;
 
   std::function<real_number(real_number)> kernel_function;
@@ -64,6 +66,7 @@ public:
   // DEBUG
   // # # # # #
   void testing_output_kernel_function(int);
+  void testing_output_kernel_profile(int, real_number);
   // # # # # #
 
   inline real_number get_force_x(int i, int j) { return force_x_matrix(i,j); }

@@ -6,6 +6,10 @@
 
 CollisionHandler::CollisionHandler(DSMC* dsmc):
   Motherbase(dsmc),
+  n_fake_store(),
+  n_real_store(),
+  n_total_store(),
+  n_out_store(),
   a11( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   vrmax11( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   /* freq11( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ), */
@@ -217,6 +221,10 @@ CollisionHandler::perform_collisions
   // Display statistics
   std::cout << "collisions performed" << std::endl;
   std::cout << "total = " << n_total << "\t real = " << n_real << "\t fake = " << n_fake << "\t out-range = " << n_fake_idx << std::endl;
+  n_fake_store.push_back(n_fake);
+  n_real_store.push_back(n_real);
+  n_total_store.push_back(n_total);
+  n_out_store.push_back(n_fake_idx);
 }
 
 void

@@ -1,3 +1,7 @@
+/*! \file boundary.hpp
+ *  \brief Header containing the class representing boundary conditions
+ */
+
 #ifndef BOUNDARY_HPP
 #define BOUNDARY_HPP
 
@@ -6,13 +10,11 @@
 #include <array>
 #include <set>
 
-class DSMC;
-
-struct Wall
-{
-  
-};
-
+/*! \class Boundary
+ *  \brief Class storing data regarding the position and the nature of boundary condistions
+ *
+ *  IN CASE OF SOLID WALLS AN ADDITIONAL CLASS HAS TO BE IMPLEMENTED
+ */
 class Boundary : protected Motherbase
 {
 
@@ -26,9 +28,9 @@ private:
                 - - - - -
                   1 (x1)                */
 
-  real_number Lx1, Lx2, Ly1, Ly2;                                 /*!< Distance from the origin of the walls (solid, holes or prescribed) */
-  std::array<real_number, 4> p_escape;                            /*!< Probability for Maxwellian wall with escaping molecules. */
-  std::array<char, 4> wall_condition;                             /*!< Boundary conditions */
+  real_number Lx1, Lx2, Ly1, Ly2;       // Distance from the origin of the walls (solid, holes or prescribed)
+  std::array<real_number, 4> p_escape;  // Probability for Maxwellian wall with escaping molecules.
+  std::array<char, 4> wall_condition;   // Boundary conditions
 
   /*! \var cond_tags
    *  \brief Set containing all possible labels for b.c.

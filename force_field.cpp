@@ -5,6 +5,8 @@
 
 // DEBUG
 // # # # # #
+#define Z_MIN -CUTOFF_Z
+#define Z_MAX CUTOFF_Z
 #include "output.hpp"
 // # # # # #
 
@@ -28,13 +30,6 @@ ForceField::ForceField(DSMC* dsmc):
 {
   std::cout << "### COMPUTING POTENTIAL KERNEL MATRIX ###" << std::endl;
   compute_kernel_matrix();
-  // TESTING MEAN FIELD
-  // # # # # #
-  /*
-  std::cout << "### TEST: computing force field ###" << std::endl;
-  compute_force_field();
-  */
-  // # # # # #
 }
 
 void
@@ -50,6 +45,11 @@ ForceField::compute_kernel_matrix
       disty = j*dy;
       dist2 = distx*distx + disty*disty;
       pot_int = compute_integral();
+      // DEBUG
+      // # # # # #
+      if (isnan(pot_int))
+        std::cout << "WARNING! NaN value for the force field at d = " << sqrt(dist2) << std::endl;
+      // # # # # #
       kernel_matrix(i,j) = pot_int;
     }
   }
@@ -63,23 +63,36 @@ ForceField::compute_integral
   if ( tmp > 0.0 )
   {
     return (
-      infinite_integrator.integrate(psi, ev_const::minfty, -sqrt(tmp))
+      infinite_integrator.integrate(psi, -CUTOFF_Z, -sqrt(tmp))
       + finite_integrator.integrate(psi, -sqrt(tmp), sqrt(tmp))
-      + infinite_integrator.integrate(psi, sqrt(tmp), ev_const::pinfty)   );
+      + infinite_integrator.integrate(psi, sqrt(tmp), CUTOFF_Z)   );
   }
   else if ( tmp < 0.0 )
   {
     return (
-      infinite_integrator.integrate(psi, ev_const::minfty, -sqrt(-tmp))
-      + infinite_integrator.integrate(psi, sqrt(-tmp), ev_const::pinfty)  );
+      infinite_integrator.integrate(psi, -CUTOFF_Z, -sqrt(-tmp))
+      + infinite_integrator.integrate(psi, sqrt(-tmp), CUTOFF_Z)  );
   }
   else
   {
     return (
-      infinite_integrator.integrate(psi, ev_const::minfty, -zero_threshold)
-      + infinite_integrator.integrate(psi, zero_threshold, ev_const::pinfty) );
+      infinite_integrator.integrate(psi, -CUTOFF_Z, -ZERO_THRESHOLD)
+      + infinite_integrator.integrate(psi, ZERO_THRESHOLD, CUTOFF_Z)  );
   }
 }
+
+/*
+real_number
+ForceField::compute_integral
+(void)
+{
+  real_number tmp = abs( dist2 - diamol*diamol );
+  return (
+    infinite_integrator.integrate(psi, ev_const::minfty, -sqrt(tmp))
+    + finite_integrator.integrate(psi, -sqrt(tmp), sqrt(tmp))
+    + infinite_integrator.integrate(psi, sqrt(tmp), ev_const::pinfty)   );
+}
+*/
 
 void
 ForceField::compute_force_field
@@ -98,7 +111,7 @@ ForceField::testing_output_kernel_function
 (int n_values)
 {
   real_number pot_int(0.0), dist(0.0);
-  real_number step = (n_cutoff_x*dx)/(n_values);
+  real_number step = (n_cutoff_x*dx)/n_values;
   std::vector<real_number> distance_values;
   std::vector<real_number> kernel_values;
   for (int i = 0; i<=n_values; ++i)
@@ -108,6 +121,24 @@ ForceField::testing_output_kernel_function
     pot_int = compute_integral();
     distance_values.push_back(dist);
     kernel_values.push_back(pot_int);
+  }
+  output->output_fun_vec(distance_values, kernel_values);
+}
+
+void
+ForceField::testing_output_kernel_profile
+(int n_values, real_number d)
+{
+  dist2 = d*d;
+  real_number z(0.0);
+  real_number step = (double)(Z_MAX-Z_MIN)/(double)n_values;
+  std::vector<real_number> distance_values;
+  std::vector<real_number> kernel_values;
+  for (int i = 0; i<=n_values; ++i)
+  {
+    z = Z_MIN + i*step;
+    distance_values.push_back(z);
+    kernel_values.push_back(psi(z));
   }
   output->output_fun_vec(distance_values, kernel_values);
 }

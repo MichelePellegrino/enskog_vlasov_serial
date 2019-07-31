@@ -1,3 +1,10 @@
+/*! \file species.hpp
+ *  \brief Header containing the class storing physical properties of fluid and wall species
+ *
+ *  At the moment the code does not support multi-species fluids, so this module
+ *  only stores fluid and wall particle diamaters and masses
+ */
+
 #ifndef EV_SPECIES_HPP
 #define EV_SPECIES_HPP
 
@@ -7,20 +14,20 @@ class Species
 private:
 
 // Fluid particles
-real_number diam_fluid;       /*!< Fluid particle diameter */
-real_number hdiam_fluid;      /*!< Fluid particle radius */
+real_number diam_fluid;       // Fluid particle diameter
+real_number hdiam_fluid;      // Fluid particle radius
 
 // Wall particles
-real_number diam_solid;       /*!< Solid particle diameter */
-real_number hdiam_solid;      /*!< Solid particle radius */
+real_number diam_solid;       // Solid particle diameter
+real_number hdiam_solid;      // Solid particle radius
 
 // Pair cross-sections
-real_number diam_gw;      /*!< Solid/fluid cross section */
-real_number hdiam_gw;     /*!< Solid/fluid half cross section */
+real_number diam_gw;          // Solid/fluid cross section
+real_number hdiam_gw;         // Solid/fluid half cross section
 
 // Masses
-real_number mass_fluid;   /*!< Fluid mass */
-real_number mass_solid;   /*!< Solid mass */
+real_number mass_fluid;       // Fluid mass
+real_number mass_solid;       // Solid mass
 
 public:
 

@@ -1,32 +1,24 @@
+/*! \file types.hpp
+ *  \brief Header containing macro for custom data types and definitions for numerical constants
+ */
+
 #ifndef EV_TYPES_HPP
 #define EV_TYPES_HPP
 
 #include <limits>
 #include <string>
 
-#ifndef DefaultPointer
 #define DefaultPointer std::shared_ptr
-#endif
 
-#ifndef DefaultString
 #define DefaultString std::string
-#endif
 
-#ifndef real_number
 #define real_number double
-#endif
 
-#ifndef RNG
 #define RNG ev_random::RngType::ParkMiller
-#endif
 
-#ifndef CORR
 #define CORR ev_correlations::CorrelationType::CarnahanStarling
-#endif
 
-#ifndef TM
 #define TM MarchingType::Standard
-#endif
 
 enum MarchingType
 {
@@ -36,6 +28,11 @@ enum MarchingType
   RK4,
 };
 
+/*! \namespace ev_const
+ *  \brief A namespace containing numerical constants
+ *
+ *  In this namespace are defined constexpr for pi, e, +/-infinity, 0^+/-
+ */
 namespace ev_const
 {
 

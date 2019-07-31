@@ -1,3 +1,7 @@
+/*! \file dmsc.hpp
+ *  \brief Header containing main class wrapper for DSMC algorithm
+ */
+
 #ifndef EV_DSMC_HPP
 #define EV_DSMC_HPP
 
@@ -7,6 +11,9 @@
 #include "species.hpp"
 #include "times.hpp"
 #include "potential.hpp"
+
+#define DEFAULT_ITER_THERMO 5
+#define DEFAULT_ITER_SAMPLE 10
 
 class ConfigurationReader;
 class Boundary;
@@ -21,6 +28,9 @@ class Output;
 
 template<MarchingType tm_type> class TimeMarching;
 
+/*! \class DSMC
+ *  \brief Class for the overall DSMC procedure
+ */
 class DSMC
 {
 
@@ -48,9 +58,9 @@ private:
 
   CorrelationFun correlation;
 
-  // Need:
-  //  - timestep for local sampling
-  //  - timestep for averaging and output
+  // NEED TO STORE LOCALLY:
+  int n_iter_thermo = DEFAULT_ITER_THERMO;
+  int n_iter_sample = DEFAULT_ITER_SAMPLE;
 
 public:
 
@@ -77,6 +87,7 @@ public:
 
   // Testing
   void test_boundary_info(void);
+  void test_species_info(void);
   void test_thermostat(void);
   void test_density(void);
   void test_force_field(void);
@@ -89,6 +100,10 @@ public:
   void initialize_simulation(void);
   void dsmc_iteration(void);
   void dsmc_loop(void);
+
+  // Output
+  void output_all_samples(void);
+  void output_all_samples(real_number);
 
 };
 

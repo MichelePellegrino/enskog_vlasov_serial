@@ -1,3 +1,7 @@
+/*! \file configuration.hpp
+ *  \brief Header containing the class that reads configuration data from file
+ */
+
 #ifndef EV_CONFIGURATION_HPP
 #define EV_CONFIGURATION_HPP
 
@@ -8,6 +12,9 @@
 
 class DSMC;
 
+/*! \class ConfigurationReader
+ *  \brief Reading configuration file
+ */
 class ConfigurationReader : protected Motherbase
 {
 
@@ -26,16 +33,16 @@ private:
   char mean_f_gg;                           // ORIGINAL: c_med_gg (campo medio gas-gas [yes/no])
   real_number phi11;                        // ORIGINAL: Phi11 (parametro potenziale PHI11)
   real_number gamma11;                      // ORIGINAL: Gamma11 (esponente potenziale PHI11 [p])
-  // real_number alpha11;                   // ORIGINAL: alpha11 (    "     "   [e])
-  // Numero punti per spline pot gas-gas
+  // real_number alpha11;                   // ORIGINAL: alpha11 (    "     "   [e]), unused for the moment
+  // Numero punti per spline pot gas-gas    // UNUSED
   real_number mass_solid;                   // ORIGINAL: Massa2 (massa molecolare solido)
   real_number diam_solid;                   // ORIGINAL: Diamol2 (diametro molecolare wall)
   char pot_wall;                            // ORIGINAL: pot_wall (tipo di potenziale gas-wall)
   char mean_f_gw;                           // ORIGINAL: c_med_gw (campo medio gas-wall [yes/no])
   real_number phi12;                        // ORIGINAL: Phi12 (parametro potenziale PHI12)
   real_number gamma12;                      // ORIGINAL: Gamma12 (esponente potenziale PHI12 [p])
-  // real_number alpha12;                   // ORIGINAL: alpha12 (    "	    "		[e])
-  // Numero punti per spline pot gas-sol
+  // real_number alpha12;                   // ORIGINAL: alpha12 (    "	    "		[e]), unused for the moment
+  // Numero punti per spline pot gas-sol    // UNUSED
 
   // Phisical state of fluid / walls
   real_number T_ini;                        // ORIGINAL: T_ini (temperatura iniziale del liquido)
@@ -108,8 +115,6 @@ public:
 
   ConfigurationReader(DSMC*, const DefaultString&);
   ~ConfigurationReader() = default;
-
-  // Getter mathods
 
   inline int get_seed() const { return seed; }
   inline int get_L_x_1() const { return L_x_1; }
