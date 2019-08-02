@@ -11,8 +11,7 @@ SRC = poly_interp.cpp base_interp.cpp
 OBJS := $(SRC:%.cpp=%.o)
 HEADERS = $(wildcard *.hpp)
 
-poly_interp.o: recipe_types.hpp base_interp.hpp
-base_interp.o: recipe_types.hpp
+interpolation.o: recipe_types.hpp interpolation.hpp
 
 .DEFAULT_GOAL = all
 
