@@ -1,11 +1,13 @@
 CXX = g++
+# CXX = gcc
 
 STANDARD = -std=c++11
 WARNINGS = -Wall
 OPTIMIZATION = -g
-CPPFLAGS = -I./utility -I/usr/local/Cellar/eigen/3.3.7/include/eigen3 -I./quadrature -I./romberg
+# CPPFLAGS = -I./utility -I/usr/local/Cellar/eigen/3.3.7/include/eigen3 -I./quadrature -I./romberg
+CPPFLAGS = -I./utility -I/usr/local/Cellar/eigen/3.3.7/include/eigen3
 CXXFLAGS = $(WARNINGS) $(STANDARD) $(OPTIMIZATION)
-LDLIBS = -L./libraries -lquadrature -lromberg
+# LDLIBS = -L./libraries -lquadrature -lromberg
 
 EXEC = main
 
