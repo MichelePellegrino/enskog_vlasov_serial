@@ -6,6 +6,20 @@
 #include <cmath>
 #include <algorithm>
 
+struct Poly_interp : Base_interp
+{
+  Doub dy;
+  Poly_interp(VecDoub_I &xv, VecDoub_I &yv, Int m):
+    n(xv.size()), mm(m), jsav(0), cor(0), xx(&xv[0]), yy(yv), dy(0.) {}
+  
+  Doub interp(Doub x)
+  {
+    Int jlo = cor ? hunt(x) : locate(x);
+    return rawinterp(jlo,x);
+  }
+  Doub rawinterp(Int jl, Doub x);
+};
+
 struct Base_interp
 /*
   Abstract base class used by all interpolation routines in this chapter.
@@ -27,27 +41,6 @@ struct Base_interp
     See definitions below.
   */
   Int hunt(const Doub x);
-};
-
-struct Poly_interp : Base_interp
-/*
-  Polynomial interpolation object. Construct with x and y vectors, and the number
-  M of points to be used locally (polynomial order plus one), then call interp for
-  interpolated values.
-*/
-{
-  Doub dy;
-  Poly_interp(VecDoub_I &xv, VecDoub_I &yv, Int m)
-    : Base_interp(xv,&yv[0],m), dy(0.) {}
-  Doub interp(Doub x)
-  {
-    /*
-      Given a value x, return an interpolated value, using data pointed to by xx and yy.
-    */
-    Int jlo = cor ? Base_interp::hunt(x) : Base_interp::locate(x);
-    return rawinterp(jlo,x);
-  }
-  Doub rawinterp(Int jl, Doub x);
 };
 
 #endif /* INTERP_HPP */

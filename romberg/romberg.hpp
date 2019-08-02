@@ -2,7 +2,7 @@
 #define ROMBERG_HPP
 
 #include "recipe_types.hpp"
-#include "interpolation.hpp"
+#include "poly_interp.hpp"
 #include "trapzd.hpp"
 
 #define ITERMAX 25
