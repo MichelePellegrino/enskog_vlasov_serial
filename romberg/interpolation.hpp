@@ -22,23 +22,11 @@ struct Base_interp
   {
     dj = MIN(1,(int)pow((Doub)n,0.25));
   }
-  Doub interp(Doub x)
-  {
-    /*
-      Given a value x, return an interpolated value, using data pointed to by xx and yy.
-    */
-    Int jlo = cor ? hunt(x) : locate(x);
-    return rawinterp(jlo,x);
-  }
   Int locate(const Doub x);
   /*
     See definitions below.
   */
   Int hunt(const Doub x);
-  Doub virtual rawinterp(Int jlo, Doub x) = 0;
-  /*
-    Derived classes provide this as the actual interpolation method.
-  */
 };
 
 struct Poly_interp : Base_interp
@@ -51,7 +39,15 @@ struct Poly_interp : Base_interp
   Doub dy;
   Poly_interp(VecDoub_I &xv, VecDoub_I &yv, Int m)
     : Base_interp(xv,&yv[0],m), dy(0.) {}
-  Doub rawinterp(Int jl, Doub x) override;
+  Doub interp(Doub x)
+  {
+    /*
+      Given a value x, return an interpolated value, using data pointed to by xx and yy.
+    */
+    Int jlo = cor ? Base_interp::hunt(x) : Base_interp::locate(x);
+    return rawinterp(jlo,x);
+  }
+  Doub rawinterp(Int jl, Doub x);
 };
 
 #endif /* INTERP_HPP */
