@@ -44,7 +44,7 @@ private:
 
   // Particle-cell map buffers
   std::vector<int> idx_cell, idx_map, cum_num, raw_num;
-  
+
   void compute_ind_map_part(void);
 
 public:
