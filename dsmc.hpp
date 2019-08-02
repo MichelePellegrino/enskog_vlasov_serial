@@ -13,6 +13,7 @@
 #include "potential.hpp"
 
 #include <memory>
+#include <cassert>
 
 #define DEFAULT_ITER_THERMO 5
 #define DEFAULT_ITER_SAMPLE 10

@@ -47,8 +47,10 @@ ForceField::compute_kernel_matrix
       pot_int = compute_integral();
       // DEBUG
       // # # # # #
+      /*
       if (isnan(pot_int))
         std::cout << "WARNING! NaN value for the force field at d = " << sqrt(dist2) << std::endl;
+      */
       // # # # # #
       kernel_matrix(i,j) = pot_int;
     }
