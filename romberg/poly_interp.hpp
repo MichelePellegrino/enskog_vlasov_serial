@@ -15,6 +15,7 @@ struct Poly_interp : Base_interp
   Poly_interp(VecDoub_I &xv, VecDoub_I &yv, Int m)
     : Base_interp(xv,&yv[0],m), dy(0.) {}
   Doub rawinterp(Int jl, Doub x) override;
+  ~Poly_interp() { }
 };
 
 #endif /* POLY_INTERP_HPP */

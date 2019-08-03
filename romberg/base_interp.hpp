@@ -39,6 +39,7 @@ struct Base_interp
   /*
     Derived classes provide this as the actual interpolation method.
   */
+  virtual ~Base_interp() { }
 };
 
 #endif /* BASE_INTERP_HPP */
