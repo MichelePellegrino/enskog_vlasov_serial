@@ -109,8 +109,8 @@ CollisionHandler::compute_collision_number
       pfnc = cnc - n_coll_cell(i,j);
       if ( rng->sample_uniform() < pfnc ) n_coll_cell(i,j)++;
     }
-    n_coll = n_coll_cell.sum();
   }
+  n_coll = n_coll_cell.sum();
 }
 
 void

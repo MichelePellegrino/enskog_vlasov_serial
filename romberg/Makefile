@@ -23,6 +23,9 @@ all: $(RESULT)
 $(RESULT): $(OBJS) $(HEADERS)
 	ar rs $@ $^
 
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $<
+
 clean:
 	$(RM) $(RESULT)
 
