@@ -99,6 +99,8 @@ correlation ()
       sampler->reset();
     }
   }
+  sampler->average();
+  output_all_samples(t);
   output->output_collisions_stat();
   std::cout << "### FINALIZING DSMC SIMULATION ###" << std::endl;
 
@@ -224,10 +226,8 @@ DSMC::dsmc_iteration
 (void)
 {
   std::cout << "### PERFORMING DSMC ITERATION ###" << std::endl;
-  /*
   std::cout << "    computing force field ..." << std::endl;
   mean_field->compute_force_field();
-  */
   std::cout << "    propagating ensemble ..." << std::endl;
   time_marching->update_ensemble();
   std::cout << "    computing density ..." << std::endl;
