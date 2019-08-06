@@ -82,7 +82,7 @@ correlation ()
   initialize_simulation();
   test_output();
   int dummy_max_iter = DEFAULT_DUMMY_ITER;
-  for (int t = 0; t < dummy_max_iter; ++t)
+  for (int t = 0; t <= dummy_max_iter; ++t)
   {
     std::cout << " >> iter = " << t << std::endl;
     dsmc_iteration();
@@ -99,8 +99,6 @@ correlation ()
       sampler->reset();
     }
   }
-  sampler->average();
-  output_all_samples(t);
   output->output_collisions_stat();
   std::cout << "### FINALIZING DSMC SIMULATION ###" << std::endl;
 
