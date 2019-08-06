@@ -81,6 +81,7 @@ correlation ()
   std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
   initialize_simulation();
   test_output();
+  /*
   int dummy_max_iter = 21;
   for (int t = 0; t < dummy_max_iter; ++t)
   {
@@ -100,6 +101,8 @@ correlation ()
     }
   }
   output->output_collisions_stat();
+  */
+  std::cout << "### FINALIZING DSMC SIMULATION ###" << std::endl;
 
 }
 
