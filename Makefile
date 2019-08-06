@@ -1,13 +1,18 @@
 CXX = g++
 # CXX = gcc
 
+INCLUDE_EIGEN = -I/usr/local/Cellar/eigen/3.3.7/include/eigen3
+# INCLUDE_EIGEN = -I/home/matematica/mpellegrino/eigen/3.3.7/include/eigen3
+
 STANDARD = -std=c++11
 WARNINGS = -Wall
 OPTIMIZATION = -g
-CPPFLAGS = -I./utility -I/usr/local/Cellar/eigen/3.3.7/include/eigen3 -I./romberg
-# CPPFLAGS = -I./utility -I/usr/local/Cellar/eigen/3.3.7/include/eigen3
+CPPFLAGS = -I./utility $(INCLUDE_EIGEN)
 CXXFLAGS = $(WARNINGS) $(STANDARD) $(OPTIMIZATION)
-LDLIBS = -L./libraries -lromberg
+
+# Old version (Romberg static lib.)
+# CPPFLAGS = -I./utility -I/usr/local/Cellar/eigen/3.3.7/include/eigen3 -I./romberg
+# LDLIBS = -L./libraries -lromberg
 
 EXEC = main
 
