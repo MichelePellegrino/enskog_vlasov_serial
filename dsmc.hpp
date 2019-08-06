@@ -15,8 +15,17 @@
 #include <memory>
 #include <cassert>
 
-#define DEFAULT_ITER_THERMO 5
-#define DEFAULT_ITER_SAMPLE 10
+#ifndef DEFAULT_ITER_THERMO
+#define DEFAULT_ITER_THERMO 10
+#endif
+
+#ifndef DEFAULT_ITER_SAMPLE
+#define DEFAULT_ITER_SAMPLE 100
+#endif
+
+#ifndef DEFAULT_DUMMY_ITER
+#define DEFAULT_DUMMY_ITER 500
+#endif
 
 class ConfigurationReader;
 class Boundary;
