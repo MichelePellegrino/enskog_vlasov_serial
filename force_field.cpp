@@ -21,15 +21,19 @@ ForceField::ForceField(DSMC* dsmc):
   finite_integrator( psi, DUMMY_A, DUMMY_B ),
   infinite_integrator( psi, DUMMY_A, DUMMY_B ),
   kernel_matrix(n_cutoff_x, n_cutoff_y, 0.0),
+  kernel_matrix_x(n_cutoff_x, n_cutoff_y, 0.0),
+  kernel_matrix_y(n_cutoff_x, n_cutoff_y, 0.0),
   force_x_matrix(0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0),
   force_y_matrix(0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0),
-  force_x_convolutioner(force_x_matrix, kernel_matrix,
+  force_x_convolutioner(force_x_matrix, kernel_matrix_x,
     density->get_num_dens_cell(), 0.0),
-  force_y_convolutioner(force_y_matrix, kernel_matrix,
+  force_y_convolutioner(force_y_matrix, kernel_matrix_y,
     density->get_num_dens_cell(), 0.0)
 {
   std::cout << "### COMPUTING POTENTIAL KERNEL MATRIX ###" << std::endl;
   compute_kernel_matrix();
+  // This one has to be more general:
+  // read_kernel_matrix("input_files/mask_matrix.txt");
 }
 
 void
@@ -53,6 +57,8 @@ ForceField::compute_kernel_matrix
       */
       // # # # # #
       kernel_matrix(i,j) = pot_int;
+      kernel_matrix_x(i,j) = pot_int*distx*dx*dy;
+      kernel_matrix_y(i,j) = pot_int*disty*dx*dy;
     }
   }
 }
@@ -83,6 +89,28 @@ ForceField::compute_integral
   }
 }
 
+void
+ForceField::read_kernel_matrix
+(const DefaultString& file_name)
+{
+  std::ifstream mask_file_stream(file_name);
+  int n_cut = (kernel_matrix.get_ux()-kernel_matrix.get_lx())*(kernel_matrix.get_uy()-kernel_matrix.get_ly());
+  for (int i = 0; i<n_cut; ++i)
+    mask_file_stream >> kernel_matrix.data()[i];
+  mask_file_stream.close();
+  real_number distx(0.0), disty(0.0);
+  for (int i = -n_cutoff_x; i<=n_cutoff_x; ++i)
+  {
+    for (int j = -n_cutoff_y; j<=n_cutoff_y; ++j)
+    {
+      distx = i*dx;
+      disty = j*dy;
+      kernel_matrix_x(i,j) = kernel_matrix(i,j) * distx*dx*dy;
+      kernel_matrix_y(i,j) = kernel_matrix(i,j) * disty*dx*dy;
+    }
+  }
+}
+
 /*
 real_number
 ForceField::compute_integral
@@ -101,9 +129,9 @@ ForceField::compute_force_field
 (void)
 {
   force_x_convolutioner.convolute();
-  force_x_matrix /= (dx*dy);
+  // force_x_matrix *= (dx*dy);
   force_y_convolutioner.convolute();
-  force_y_matrix /= (dx*dy);
+  // force_y_matrix *= (dx*dy);
 }
 
 

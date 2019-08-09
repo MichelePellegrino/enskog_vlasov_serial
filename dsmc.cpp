@@ -77,10 +77,11 @@ correlation ()
   // test_sampling();
   // # # # # #
 
-  // *** TESTING A FEW DSMC ITERATIONS TO SPOT EVIDENT BUGS ***
-  std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
+  std::cout << "### INITIALIZE DSMC SIMULATION ###" << std::endl;
   initialize_simulation();
   test_output();
+
+  std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
   int dummy_max_iter = DEFAULT_DUMMY_ITER;
   for (int t = 0; t <= dummy_max_iter; ++t)
   {
@@ -100,6 +101,7 @@ correlation ()
     }
   }
   output->output_collisions_stat();
+
   std::cout << "### FINALIZING DSMC SIMULATION ###" << std::endl;
 
 }

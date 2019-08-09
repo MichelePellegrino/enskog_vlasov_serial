@@ -43,9 +43,13 @@ private:
   NumericalIntegrator<Infinite> infinite_integrator;
 
   ev_matrix::SlideMaskMatrix<real_number> kernel_matrix;
+  ev_matrix::SlideMaskMatrix<real_number> kernel_matrix_x;
+  ev_matrix::SlideMaskMatrix<real_number> kernel_matrix_y;
 
   void compute_kernel_matrix (void);
   real_number compute_integral (void);
+
+  void read_kernel_matrix (const DefaultString&);
 
   ev_matrix::MaskMatrix<real_number> force_x_matrix;
   ev_matrix::MaskMatrix<real_number> force_y_matrix;
