@@ -20,18 +20,52 @@ Ensemble::populate
 (void)
 {
 
-  // Basic type
+  switch( conf->get_liq_interf() )
+  {
+    // See configuration
+    case 0:
+      for ( int i = 0; i<n_particles; ++i )
+      {
+        particles[i].xp = grid->get_x_min() + rng->sample_uniform() * ( grid->get_x_max() - grid->get_x_min() );
+        particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
+      }
+      break;
+    case 5:
+      for ( int i = 0; i<conf->get_npart1(); ++i )
+      {
+        particles[i].xp = grid->get_x_min() + rng->sample_uniform() * ( grid->get_x_max() - grid->get_x_min() );
+        particles[i].yp = rng->sample_uniform() * conf->get_y_liq_interf() - conf->get_y_liq_interf()/2.0;
+      }
+      for ( int i = conf->get_npart1(); i<n_particles; ++i )
+      {
+        particles[i].xp = grid->get_x_min() + rng->sample_uniform() * ( grid->get_x_max() - grid->get_x_min() );
+        do {
+          particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
+        } while( abs( particles[i].yp ) <= conf->get_y_liq_interf()/2.0 );
+      }
+      break;
+    case 6:
+      for ( int i = 0; i<conf->get_npart1(); ++i )
+      {
+        particles[i].xp = rng->sample_uniform() * conf->get_x_liq_interf() - conf->get_x_liq_interf()/2.0;
+        particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
+      }
+      for ( int i = conf->get_npart1(); i<n_particles; ++i )
+      {
+        particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
+        do {
+          particles[i].xp = grid->get_x_min() + rng->sample_uniform() * ( grid->get_x_max() - grid->get_x_min() );
+        }   while( abs( particles[i].xp ) <= conf->get_x_liq_interf()/2.0 );
+      }
+      break;
+    default:
+      std::cerr << "Unrecognized configuration" << std::endl;
+  }
+
   for ( int i = 0; i<n_particles; ++i )
   {
-    particles[i].xp = grid->get_x_min() + rng->sample_uniform() * ( grid->get_x_max() - grid->get_x_min() );
-    particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
     particles[i].cell_x = (int) ( (particles[i].xp-grid->get_x_min() ) / grid->get_dx() );
     particles[i].cell_y = (int) ( (particles[i].yp-grid->get_y_min() ) / grid->get_dy() );
-    /*
-    particles[i].vx = - 1.0 + 2.0 * rng->sample_uniform();
-    particles[i].vy = - 1.0 + 2.0 * rng->sample_uniform();
-    particles[i].vz = 0.0;
-    */
     rng->sample_box_muller (
       mass, 0.0, 0.0, T_ini,
       particles[i].vx,

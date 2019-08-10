@@ -16,12 +16,14 @@ Grid::Grid
   y_max(conf->get_y_max()),
   x_extra(conf->get_x_extra()),
   y_extra(conf->get_y_extra()),
-  dx((double)(x_max-x_min)/(double)n_cells_x),
-  dy((double)(y_max-y_min)/(double)n_cells_y),
+  dx(conf->get_dx()),
+  dy(conf->get_dy()),
   rdx(1.0/dx),
   rdy(1.0/dy),
   xc(n_cells_x),
-  yc(n_cells_y)
+  yc(n_cells_y),
+  channel_section(conf->get_channel_section()),
+  cell_volume(conf->get_cell_volume())
   {
     // Coerence check x1
     if ( boundary->get_pct().find(boundary->get_wall_condition()[0]) == boundary->get_pct().end() )
@@ -70,15 +72,6 @@ Grid::Grid
     // Set cell volume (basic case)
     std::cout << "### SETTING CELL DEPTH ###" << std::endl;
     std::cout << " >> npc = " << conf->get_n_part()/(double)n_cells << std::endl;
-    // real_number channel_area = (x_lim_p-x_lim_m) * (y_lim_p-y_lim_m);
-    real_number channel_area = (x_max-x_min) * (y_max-y_min);
-    real_number dg = species->get_diam_fluid();
-    /* TEMP: */
-    real_number homogeneous_density = 6.0 * conf->get_eta_liq0() / (ev_const::pi * dg*dg*dg);
-    // real_number homogeneous_density = 6.0 * conf->get_eta_liq1() / (ev_const::pi * dg*dg*dg);
-    real_number channel_volume = conf->get_n_part() / homogeneous_density;
-    channel_section = channel_volume / channel_area;
-    cell_volume = dx*dy*channel_section;
     // Initialize centroids
     for ( int i = 0; i < n_cells_x; ++i)  xc[i] = x_min + ( i+0.5 ) * dx;
     for ( int j = 0; j < n_cells_y; ++j)  yc[j] = y_min + ( j+0.5 ) * dy;

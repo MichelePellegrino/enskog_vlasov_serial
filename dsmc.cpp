@@ -81,6 +81,7 @@ correlation ()
   initialize_simulation();
   test_output();
 
+  /*
   std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
   int dummy_max_iter = DEFAULT_DUMMY_ITER;
   for (int t = 0; t <= dummy_max_iter; ++t)
@@ -101,6 +102,7 @@ correlation ()
     }
   }
   output->output_collisions_stat();
+  */
 
   std::cout << "### FINALIZING DSMC SIMULATION ###" << std::endl;
 
@@ -215,10 +217,7 @@ DSMC::initialize_simulation
 (void)
 {
   std::cout << "### INITIALIZINING DENSITY FIELD ###" << std::endl;
-  density->binning();
-  density->fill_dummy_field();
-  density->compute_reduced_density();
-  density->compute_avg_density();
+  density->perform_density_kernel();
 }
 
 void

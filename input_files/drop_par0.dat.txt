@@ -27,7 +27,7 @@
 # DENSITA' DELLA PARETE per correlazio >.... 0.7000e00
 # DENSITA' DEL GAS     ================>.... 0.6490e-02
 # DENSITA' DEL LIQUIDO ================>.... 0.3763e00
-# Presenza di strato liquido iniziale==>....       13
+# Presenza di strato liquido iniziale==>....       6
 # spessore strato liquido iniziale x ==>.... 0.1800e02
 # spessore strato liquido iniziale y ==>.... 0.0000e00
 # Raggio goccia iniziale liquida     ==>.... 0.3000e02
@@ -75,8 +75,8 @@
 # XMAX ================================>.... 0.3500e02
 # YMIN ================================>.... 0.2900e02
 # YMAX ================================>.... 0.2900e02
-# XEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.3000e01
-# YEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.3000e01
+# XEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.4000e01
+# YEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.4000e01
 # NUMERO CELLE DIR. X =================>....      700
 # NUMERO CELLE DIR. Y =================>....      580
 # NUMERO PARTICELLE LIQUIDO ===========>....  4060000

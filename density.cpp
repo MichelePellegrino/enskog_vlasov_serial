@@ -59,7 +59,6 @@ void
 DensityKernel::binning
 (void)
 {
-  // Binning and setting each particle index
   n_part_cell = 0;
   int NP = ensemble->get_n_particles();
   idx_cell.assign(NP, 0);
