@@ -110,6 +110,7 @@ private:
   char c_med_comp_type;                     // ORIGINAL: c_med_comp_type (choice for build_I_matrix routine)
   bool collstat;                            // ORIGINAL: collstat	(collisions statistics off/on [0/1])
   int ndom;                                 // ORIGINAL: ndom	(number of subdomains for statistics)
+  int niter_sampling;                       // No. iterations for sampling
 
   // Derived quantities
   real_number dx, dy;
@@ -127,6 +128,8 @@ public:
   ~ConfigurationReader() = default;
 
   void setup_initial_configuration(void);
+
+  inline char get_mean_f_gg() const { return mean_f_gg; }
 
   inline int get_seed() const { return seed; }
   inline int get_L_x_1() const { return L_x_1; }
@@ -169,6 +172,7 @@ public:
   inline real_number get_delta_t() const { return delta_t; }
 
   inline int get_niter_thermo() const { return niter_thermo; }
+  inline int get_niter_sampling() const { return niter_sampling; }
   inline real_number get_T_ref() const { return T_ref; }
   inline real_number get_T_ini() const { return T_ini; }
 
@@ -177,7 +181,7 @@ public:
 
   // Initial configuration
   inline real_number get_channel_area() const { return channel_area; }
-  inline real_number get_channel_area0() const { return channel_area0; } 
+  inline real_number get_channel_area0() const { return channel_area0; }
   inline real_number get_channel_area1() const { return channel_area1; }
   inline real_number get_homogeneous_density() const { return homogeneous_density; }
   inline real_number get_homogeneous_density0() const { return homogeneous_density0; }

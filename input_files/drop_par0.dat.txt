@@ -27,12 +27,12 @@
 # DENSITA' DELLA PARETE per correlazio >.... 0.7000e00
 # DENSITA' DEL GAS     ================>.... 0.6490e-02
 # DENSITA' DEL LIQUIDO ================>.... 0.3763e00
-# Presenza di strato liquido iniziale==>....       6
-# spessore strato liquido iniziale x ==>.... 0.1800e02
-# spessore strato liquido iniziale y ==>.... 0.0000e00
+# Presenza di strato liquido iniziale==>....       5
+# spessore strato liquido iniziale x ==>.... 0.0000e00
+# spessore strato liquido iniziale y ==>.... 0.1800e02
 # Raggio goccia iniziale liquida     ==>.... 0.3000e02
 # Offset goccia liquida iniziale     ==>.... 0.1400e02
-# Number of iterations for thermostat =>....      50
+# Number of iterations for thermostat =>....      20
 # Reference temperature for thermostat=>.... 0.5000e00
 # Keep baricentre fixed (1) or not (0)=>....        0
 # Natura del Bordo x1, parete o libero =>... h
@@ -99,4 +99,5 @@
 # Choice for build_I_matrix routine   =>     o
 # Collision statistics off (0) on (1) =>     0
 # Number of subdomains for statistics =>     6
+# Number of iterations for sampling ===>     200
 # **************************** FINE INPUT *************************************

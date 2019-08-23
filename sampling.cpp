@@ -9,7 +9,7 @@ Sampler::Sampler(DSMC* dsmc):
 
   inner_counter( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0 ),
   inner_counter_cast( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
-  
+
   vx_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   vy_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   vz_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
@@ -22,7 +22,9 @@ Sampler::Sampler(DSMC* dsmc):
   pyz_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   qx_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   qy_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
-  qz_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 )
+  qz_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
+
+  numdens_avg( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 )
 
   { }
 
@@ -55,11 +57,11 @@ Sampler::sample
   int i, j, idx_p;
   real_number vx, vy, vz, e_kin;
   outer_counter++;
-  for(int idx_c = 0; idx_c<nc; ++idx_c)
+  for ( int idx_c = 0; idx_c<nc; ++idx_c )
   {
     i = grid->lexico_inv(idx_c).first;
     j = grid->lexico_inv(idx_c).second;
-    for(int k = density->iof(idx_c); k<density->iof(idx_c+1); ++k)
+    for ( int k = density->iof(idx_c); k < density->iof(idx_c+1); ++k )
     {
       idx_p = density->ind(k);
       vx = ensemble->get_vx(idx_p);
@@ -104,4 +106,5 @@ Sampler::average
   temp_avg /= inner_counter_cast;
   temp_avg = ( temp_avg -
     vx_avg*vx_avg - vy_avg*vy_avg - vz_avg*vz_avg ) / 3.0;
+  numdens_avg = inner_counter_cast / ( (double)outer_counter * grid->get_cell_volume() );
 }

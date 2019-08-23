@@ -655,6 +655,13 @@ ConfigurationReader::read_conf_file
   ss >> ndom;
   ss.clear(); ss.str(DefaultString());
 
+  getline (fs, line_buffer);                // # Number of iterations for sampling
+
+  ss << line_buffer;
+  ss.seekg(45);
+  ss >> niter_sampling;
+  ss.clear(); ss.str(DefaultString());
+
   fs.close();
 
   dx = (double)(x_max+x_min) / (double)n_cells_x;

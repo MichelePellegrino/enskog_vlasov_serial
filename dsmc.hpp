@@ -73,6 +73,7 @@ private:
   // NEED TO STORE LOCALLY:
   int n_iter_thermo = DEFAULT_ITER_THERMO;
   int n_iter_sample = DEFAULT_ITER_SAMPLE;
+  bool mean_field_gg;
 
 public:
 

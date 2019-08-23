@@ -59,8 +59,21 @@ sampler (
 output (
   new Output(this)
 ),
-correlation ()
+correlation (),
+n_iter_thermo ( conf->get_niter_thermo() ),
+n_iter_sample ( conf->get_niter_sampling() )
 {
+
+  if ( conf->get_mean_f_gg() == 'y' || conf->get_mean_f_gg() == 'Y' )
+  {
+    mean_field_gg = true;
+    std::cout << "### MEAN-FIELD ON ###" << std::endl;
+  }
+  else
+  {
+    mean_field_gg = false;
+    std::cout << "### MEAN-FIELD OFF ###" << std::endl;
+  }
 
   // *** PRELIMINARY TESTING ***
   // # # # # #
@@ -81,7 +94,6 @@ correlation ()
   initialize_simulation();
   test_output();
 
-  /*
   std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
   int dummy_max_iter = DEFAULT_DUMMY_ITER;
   for (int t = 0; t <= dummy_max_iter; ++t)
@@ -102,7 +114,6 @@ correlation ()
     }
   }
   output->output_collisions_stat();
-  */
 
   std::cout << "### FINALIZING DSMC SIMULATION ###" << std::endl;
 
@@ -225,8 +236,11 @@ DSMC::dsmc_iteration
 (void)
 {
   std::cout << "### PERFORMING DSMC ITERATION ###" << std::endl;
-  std::cout << "    computing force field ..." << std::endl;
-  mean_field->compute_force_field();
+  if ( mean_field_gg )
+  {
+    std::cout << "    computing force field ..." << std::endl;
+    mean_field->compute_force_field();
+  }
   std::cout << "    propagating ensemble ..." << std::endl;
   time_marching->update_ensemble();
   std::cout << "    computing density ..." << std::endl;
@@ -262,6 +276,7 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_qx_avg(), "output_files/samples/test_sample_qx.txt");
   output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy.txt");
   output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz.txt");
+  output->output_sample(sampler->get_numdens_avg(), "output_files/samples/test_sample_numdens");
 }
 
 void
@@ -282,4 +297,5 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_qx_avg(), "output_files/samples/test_sample_qx", t);
   output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy", t);
   output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz", t);
+  output->output_sample(sampler->get_numdens_avg(), "output_files/samples/test_sample_numdens", t);
 }
