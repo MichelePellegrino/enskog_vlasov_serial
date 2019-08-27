@@ -31,9 +31,9 @@ ForceField::ForceField(DSMC* dsmc):
     density->get_num_dens_cell(), 0.0)
 {
   std::cout << "### COMPUTING POTENTIAL KERNEL MATRIX ###" << std::endl;
-  // compute_kernel_matrix();
+  compute_kernel_matrix();
   // This one has to be more general:
-  read_kernel_matrix("input_files/mask_matrix.txt");
+  // read_kernel_matrix("input_files/mask_matrix.txt");
 }
 
 void

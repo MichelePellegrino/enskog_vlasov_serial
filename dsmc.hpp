@@ -7,6 +7,7 @@
 
 #include "types.hpp"
 #include "random.hpp"
+#include "stopwatch.hpp"
 #include "correlations.hpp"
 #include "species.hpp"
 #include "times.hpp"
@@ -69,6 +70,8 @@ private:
   DefaultPointer<Output> output;
 
   CorrelationFun correlation;
+
+  Stopwatch<DefaultWatchPrecision> stopwatch;
 
   // NEED TO STORE LOCALLY:
   int n_iter_thermo = DEFAULT_ITER_THERMO;

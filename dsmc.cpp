@@ -60,6 +60,7 @@ output (
   new Output(this)
 ),
 correlation (),
+stopwatch(4, "millisecond"),
 n_iter_thermo ( conf->get_niter_thermo() ),
 n_iter_sample ( conf->get_niter_sampling() )
 {
