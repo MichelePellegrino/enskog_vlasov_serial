@@ -12,9 +12,8 @@ CollisionHandler::CollisionHandler(DSMC* dsmc):
   n_out_store(),
   a11( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   vrmax11( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
-  /* freq11( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ), */
   anew( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
-  // vrmaxnew( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
+  vrmaxnew( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   n_coll_cell( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0 ),
   scaled_k( 0.0, 3 ),
   rel_vel( 0.0, 3 ),
@@ -45,7 +44,7 @@ CollisionHandler::compute_majorants
   a11.fill(0.0);
   anew.fill(0.0);
   vrmax11.fill(0.0);
-  // vrmaxnew.fill(0.0);
+  vrmaxnew.fill(0.0);
   for (int itest = 0; itest<ntest; itest++)
   {
     idx_p1 = (int)( rng->sample_uniform() * npart );
@@ -70,9 +69,9 @@ CollisionHandler::compute_majorants
       {
         ichk = (int)( (xkh - xmin) * rdx );
         jchk = (int)( (ykh - ymin) * rdy );
-        chi11 = correlation( density->get_aveta(ip1,jp1) );
+        chi11 = correlation( density->get_aveta(ichk, jchk) );
         a11(ip1, jp1) = std::max(a11(ip1, jp1), density->get_numdens(ip1, jp1) * chi11);
-        a11(ichk, jchk) = std::max(a11(ichk, jchk), density->get_numdens(ichk, jchk) * chi11);
+        a11(ick, jck) = std::max(a11(ichk, jchk), density->get_numdens(ichk, jchk) * chi11);
         anew(ip1, jp1) = a11(ip1, jp1);
         np2 = density->iof(idx_ck);
         jjp2 = np2 + (int)( rng->sample_uniform() * density->get_npc(ick, jck) );
@@ -84,8 +83,8 @@ CollisionHandler::compute_majorants
         );
         vrmax11(ip1, jp1) = std::max( vrmax11(ip1, jp1), vr );
         vrmax11(ick,jck) = std::max( vrmax11(ick,jck), vr );
-        // vrmaxnew(ip1, jp1) = vrmax11(ip1, jp1);
-        // vrmaxnew(ick, jck) = vrmax11(ick, jck);
+        vrmaxnew(ip1, jp1) = vrmax11(ip1, jp1);
+        vrmaxnew(ick, jck) = vrmax11(ick, jck);
       }
     }
   }
@@ -126,6 +125,7 @@ void
 CollisionHandler::perform_collisions
 (void)
 {
+
   int nc = grid->get_n_cells();
   int idx, idx_cell1, i_cell1, j_cell1, idx_p1;
   int idx_cell2, idx_hcell2, i_cell2, j_cell2, idx_p2;
@@ -135,7 +135,7 @@ CollisionHandler::perform_collisions
   compute_collision_number();
   // Reset number of collisions
   int n_fake_idx = 0;
-  n_fake = 0, n_real = 0, n_total = 0;
+  n_fake = 0; n_real = 0; n_total = 0;
   while ( nc > 0 )
   {
     // (1) Select a cell at random with with equiprobability
@@ -181,16 +181,16 @@ CollisionHandler::perform_collisions
         rel_vel[1] = ensemble->get_vy(idx_p2) - ensemble->get_vy(idx_p1);
         rel_vel[2] = ensemble->get_vz(idx_p2) - ensemble->get_vz(idx_p1);
         vr = sqrt( rel_vel[0]*rel_vel[0]+rel_vel[1]*rel_vel[1]+rel_vel[2]*rel_vel[2] );
-        // vrmaxnew(i_cell1, j_cell1) = std::max(vrmaxnew(i_cell1, j_cell1), vr);
-        // vrmaxnew(i_cell2, j_cell2) = std::max(vrmaxnew(i_cell2, j_cell2), vr);
+        vrmaxnew(i_cell1, j_cell1) = std::max( vrmaxnew(i_cell1, j_cell1), vr );
+        vrmaxnew(i_cell2, j_cell2) = std::max( vrmaxnew(i_cell2, j_cell2), vr );
         scalar_prod = rel_vel[0]*scaled_k[0] + rel_vel[1]*scaled_k[1] + rel_vel[2]*scaled_k[2];
         scalar_prod *= sigma;
         aa = density->get_numdens(i_cell2, j_cell2) * correlation(
           density->get_aveta(grid->lexico_inv(idx_hcell2).first, grid->lexico_inv(idx_hcell2).second) );
-        anew(i_cell1, j_cell1) = std::max( anew(i_cell1, j_cell1),aa );
+        anew(i_cell1, j_cell1) = std::max( anew(i_cell1, j_cell1), aa );
         anew(i_cell2, j_cell2) = std::max( anew(i_cell2, j_cell2),
           density->get_numdens(i_cell1, j_cell1) * aa / density->get_numdens(i_cell2, j_cell2) );
-        if( a11(i_cell2, j_cell2)==0.0 )
+        if( a11(i_cell2, j_cell2) == 0.0 )
           a11(i_cell2, j_cell2) = anew(i_cell2, j_cell2);
         if( scalar_prod > 0.0 )
         {
@@ -225,13 +225,32 @@ CollisionHandler::perform_collisions
   n_real_store.push_back(n_real);
   n_total_store.push_back(n_total);
   n_out_store.push_back(n_fake_idx);
+
+  update_majorants();
+
+}
+
+void
+CollisionHandler::update_majorants
+(void)
+{
+  if ( (double)n_fake > alpha_1*(double)n_real )
+  {
+    a11 = anew;
+    vrmax11 = vrmaxnew;
+  }
+  else
+  {
+    a11 = alpha_2*a11;
+    vrmax11 = alpha_2*vrmax11;
+  }
 }
 
 void
 CollisionHandler::perform_collision_kernel
 (void)
 {
-  compute_majorants();
+  // compute_majorants();
   compute_collision_number();
   perform_collisions();
 }

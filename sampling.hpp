@@ -34,6 +34,7 @@ public:
 
   Sampler(DSMC*);
   ~Sampler() = default;
+
   void reset(void);
   void sample(void);
   void average(void);

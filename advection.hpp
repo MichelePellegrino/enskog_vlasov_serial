@@ -8,6 +8,7 @@
 #include "grid.hpp"
 #include "species.hpp"
 
+
 class AbstractTimeMarching : protected Motherbase
 {
 protected:
@@ -33,6 +34,7 @@ public:
   virtual void update_ensemble() = 0;
 };
 
+
 template <MarchingType dummy_rng_type>
 class TimeMarching : public AbstractTimeMarching
 {
@@ -44,6 +46,7 @@ public:
     }
   ~TimeMarching() = default;
 };
+
 
 template <>
 class TimeMarching<Standard> : public AbstractTimeMarching

@@ -94,6 +94,8 @@ n_iter_sample ( conf->get_niter_sampling() )
   std::cout << "### INITIALIZE DSMC SIMULATION ###" << std::endl;
   initialize_simulation();
   test_output();
+  display_barycentre();
+  display_total_speed();
 
   std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
   int dummy_max_iter = DEFAULT_DUMMY_ITER;
@@ -113,6 +115,8 @@ n_iter_sample ( conf->get_niter_sampling() )
       output_all_samples(t);
       sampler->reset();
     }
+    display_barycentre();
+    display_total_speed();
   }
   output->output_collisions_stat();
 
@@ -221,6 +225,24 @@ DSMC::test_output
   output->output_collisions();
 }
 
+void
+DSMC::display_barycentre
+(void) const
+{
+  ensemble->compute_baricentre();
+  std::cout << "### TEST: baricentre ###" << std::endl;
+  std::cout << " >> x_b = " << ensemble->get_bar_x() << ";\ty_b = " << ensemble->get_bar_y() << std::endl;
+}
+
+void
+DSMC::display_total_speed
+(void) const
+{
+  ensemble->compute_total_speed();
+  std::cout << "### TEST: total speed ###" << std::endl;
+  std::cout << " >> v_x = " << ensemble->get_tot_vel_x() << ";\tv_y = " << ensemble->get_tot_vel_y() << std::endl;
+}
+
 
 // DSMC SIMULATION STEPS
 
@@ -230,6 +252,8 @@ DSMC::initialize_simulation
 {
   std::cout << "### INITIALIZINING DENSITY FIELD ###" << std::endl;
   density->perform_density_kernel();
+  std::cout << "### INITIALIZINING COLLISIONS MAJORANTS ###" << std::endl;
+  collision_handler->compute_majorants();
 }
 
 void

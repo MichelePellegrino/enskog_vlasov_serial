@@ -41,7 +41,7 @@ Ensemble::populate
         particles[i].xp = grid->get_x_min() + rng->sample_uniform() * ( grid->get_x_max() - grid->get_x_min() );
         do {
           particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
-        } while( abs( particles[i].yp ) <= conf->get_y_liq_interf()/2.0 );
+        } while( abs( particles[i].yp ) < conf->get_y_liq_interf()/2.0 );
       }
       break;
     case 6:
@@ -55,7 +55,7 @@ Ensemble::populate
         particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
         do {
           particles[i].xp = grid->get_x_min() + rng->sample_uniform() * ( grid->get_x_max() - grid->get_x_min() );
-        }   while( abs( particles[i].xp ) <= conf->get_x_liq_interf()/2.0 );
+        }   while( abs( particles[i].xp ) < conf->get_x_liq_interf()/2.0 );
       }
       break;
     default:
@@ -77,6 +77,48 @@ Ensemble::populate
 }
 
 void
+Ensemble::compute_baricentre
+(void)
+{
+
+  barycentre_x = 0; barycentre_y = 0;
+
+  for ( int i = 0; i<n_particles; ++i )
+  {
+
+    barycentre_x += particles[i].xp;
+    barycentre_y += particles[i].yp;
+
+  }
+
+  barycentre_x /= n_particles;
+  barycentre_y /= n_particles;
+
+}
+
+void
+Ensemble::compute_total_speed
+(void)
+{
+
+  total_speed_x = 0; total_speed_y = 0;
+
+  for ( int i = 0; i<n_particles; ++i )
+  {
+
+    total_speed_x += particles[i].vx;
+    total_speed_y += particles[i].vy;
+
+  }
+
+  total_speed_x /= n_particles;
+  total_speed_y /= n_particles;
+
+}
+
+
+/*
+void
 Ensemble::test_stream
 (real_number dt)
 {
@@ -95,3 +137,4 @@ Ensemble::test_stream
       particles[i].yp = grid->get_y_max() - grid->get_y_min() + particles[i].yp;
   }
 }
+*/

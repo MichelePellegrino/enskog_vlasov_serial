@@ -111,6 +111,8 @@ public:
   void test_collisions(void);
   void test_sampling(void);
   void test_output(void);
+  void display_barycentre(void) const;
+  void display_total_speed(void) const;
 
   // Initialize
   void initialize_simulation(void);

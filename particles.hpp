@@ -34,6 +34,12 @@ private:
 
   std::vector<Particle> particles;    // Local vector of particles
 
+  real_number barycentre_x;
+  real_number barycentre_y;
+
+  real_number total_speed_x;
+  real_number total_speed_y;
+
   /*! \fn populate
    *  \brief Randomly populate the phase space
    */
@@ -52,6 +58,9 @@ public:
 
   /* UTILITIES (unused) */
   // void save_to_file(const DefaultString&) const;
+
+  void compute_baricentre(void);
+  void compute_total_speed(void);
 
   // Parameter getters
   inline const int& get_n_particles(void) const { return n_particles; }
@@ -76,6 +85,12 @@ public:
 
   inline int get_cx(int k) const { return particles[k].cell_x; }
   inline int get_cy(int k) const { return particles[k].cell_y; }
+
+  inline real_number get_bar_x () const { return barycentre_x; }
+  inline real_number get_bar_y () const { return barycentre_y; }
+
+  inline real_number get_tot_vel_x () const { return total_speed_x; }
+  inline real_number get_tot_vel_y () const { return total_speed_y; }
 
 };
 

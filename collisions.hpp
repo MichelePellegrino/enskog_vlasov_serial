@@ -9,7 +9,17 @@
 #include <algorithm>
 #include <vector>
 
+#ifndef TEST_COEFF_MULT
 #define TEST_COEFF_MULT 5
+#endif
+
+#ifndef DEFAULT_ALPHA_1
+#define DEFAULT_ALPHA_1 1e-2
+#endif
+
+#ifndef DEFAULT_ALPHA_2
+#define DEFAULT_ALPHA_2 0.99
+#endif
 
 /*
 
@@ -36,13 +46,12 @@ private:
   ev_matrix::MaskMatrix<real_number> a11;               // Init. = 0.0 (A_i); as many as no. cells
   ev_matrix::MaskMatrix<real_number> vrmax11;           // Max relative speed (C_i); as many as no. cells
 
+  // Computed at next iteration
+  ev_matrix::MaskMatrix<real_number> anew;
+  ev_matrix::MaskMatrix<real_number> vrmaxnew;
+
   /* NEED TO BE IMPLEMENTED !!! */
   // ev_matrix::MaskMatrix<real_number> freq11;         // As many as no. cells
-
-  ev_matrix::MaskMatrix<real_number> anew;              // Computed at next iteration
-
-  /* THIS HAS NOT BEEN USED YET! */
-  // ev_matrix::MaskMatrix<real_number> vrmaxnew;          //    "   "   "   "
 
   int n_coll;
   ev_matrix::MaskMatrix<int> n_coll_cell;
@@ -60,6 +69,11 @@ private:
   // Utilities
   real_number vr = 0.0, scalar_prod = 0.0;
   std::vector<int> cells_ind;
+
+  // Controlling number of collisions
+  const real_number alpha_1 = DEFAULT_ALPHA_1;
+  const real_number alpha_2 = DEFAULT_ALPHA_2;
+  void update_majorants(void);
 
   // References from other classes
   const int& npart;
