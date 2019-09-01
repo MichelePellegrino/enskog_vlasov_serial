@@ -9,7 +9,7 @@ class Sampler : protected Motherbase
 
 private:
 
-  int outer_counter;
+  int outer_counter = 0;
 
   ev_matrix::MaskMatrix<int> inner_counter;
   ev_matrix::MaskMatrix<real_number> inner_counter_cast;

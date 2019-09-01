@@ -71,7 +71,7 @@ CollisionHandler::compute_majorants
         jchk = (int)( (ykh - ymin) * rdy );
         chi11 = correlation( density->get_aveta(ichk, jchk) );
         a11(ip1, jp1) = std::max(a11(ip1, jp1), density->get_numdens(ip1, jp1) * chi11);
-        a11(ick, jck) = std::max(a11(ichk, jchk), density->get_numdens(ichk, jchk) * chi11);
+        a11(ick, jck) = std::max(a11(ick, jck), density->get_numdens(ick, jck) * chi11);
         anew(ip1, jp1) = a11(ip1, jp1);
         np2 = density->iof(idx_ck);
         jjp2 = np2 + (int)( rng->sample_uniform() * density->get_npc(ick, jck) );

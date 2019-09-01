@@ -107,4 +107,5 @@ Sampler::average
   temp_avg = ( temp_avg -
     vx_avg*vx_avg - vy_avg*vy_avg - vz_avg*vz_avg ) / 3.0;
   numdens_avg = inner_counter_cast / ( (double)outer_counter * grid->get_cell_volume() );
+  outer_counter = 0;
 }
