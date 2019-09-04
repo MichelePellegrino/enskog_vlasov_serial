@@ -134,8 +134,7 @@ CollisionHandler::perform_collisions
   setup_cell_ind();
   compute_collision_number();
   // Reset number of collisions
-  int n_fake_idx = 0;
-  n_fake = 0; n_real = 0; n_total = 0;
+  n_fake_idx = 0; n_fake = 0; n_real = 0; n_total = 0;
   while ( nc > 0 )
   {
     // (1) Select a cell at random with with equiprobability
@@ -234,7 +233,7 @@ void
 CollisionHandler::update_majorants
 (void)
 {
-  if ( (double)n_fake > alpha_1*(double)n_real )
+  if ( (double)n_fake_idx > alpha_1*(double)n_real )
   {
     a11 = anew;
     vrmax11 = vrmaxnew;
@@ -244,6 +243,13 @@ CollisionHandler::update_majorants
     a11 = alpha_2*a11;
     vrmax11 = alpha_2*vrmax11;
   }
+  /*
+  if ( (double)n_fake > alpha_3*(double)n_real )
+  {
+    a11 = alpha_4*a11;
+    vrmax11 = alpha_4*vrmax11;
+  }
+  */
 }
 
 void

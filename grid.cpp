@@ -28,12 +28,12 @@ Grid::Grid
     // Coerence check x1
     if ( boundary->get_pct().find(boundary->get_wall_condition()[0]) == boundary->get_pct().end() )
     {
-      assert(x_min==boundary->get_Lx1() && "In case of logical b.c. x_min and Lx1 have to be the same");
+      assert(x_min==-boundary->get_Lx1() && "In case of logical b.c. x_min and Lx1 have to be the same");
       x_lim_m = -boundary->get_Lx1();
     }
     else
     {
-      assert(x_min!=boundary->get_Lx1() && "In case of physical b.c. x_min and Lx1 can't be equal");
+      assert(x_min!=-boundary->get_Lx1() && "In case of physical b.c. x_min and Lx1 can't be equal");
       x_lim_m = -(boundary->get_Lx1() - species->get_diam_gw());
     }
     // Coerence check x2
@@ -50,12 +50,12 @@ Grid::Grid
     // Coerence check y1
     if ( boundary->get_pct().find(boundary->get_wall_condition()[1]) == boundary->get_pct().end() )
     {
-      assert(y_min==boundary->get_Ly1() && "In case of logical b.c. x_min and Ly1 have to be the same");
+      assert(y_min==-boundary->get_Ly1() && "In case of logical b.c. x_min and Ly1 have to be the same");
       y_lim_m = -boundary->get_Ly1();
     }
     else
     {
-      assert(y_min!=boundary->get_Ly1() && "In case of physical b.c. x_min and Ly1 can't be equal");
+      assert(y_min!=-boundary->get_Ly1() && "In case of physical b.c. x_min and Ly1 can't be equal");
       y_lim_m = -(boundary->get_Ly1() - species->get_diam_gw());
     }
     // Coerence check y2

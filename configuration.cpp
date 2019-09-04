@@ -25,6 +25,7 @@ ConfigurationReader::read_conf_file
   DefaultString line_buffer;
 
   std::cout << "### READING CONFIGURATION PARAMETERS ###" << std::endl;
+  std::cout << " >> Configuration file: " << conf_file_name << std::endl;
 
   getline (fs, line_buffer);                // ##  **DEFINIZIONE DELLA PROVA
   getline (fs, line_buffer);                // #
@@ -687,6 +688,11 @@ ConfigurationReader::setup_initial_configuration
       channel_volume = n_part / homogeneous_density;
       channel_section = channel_volume / channel_area;
       cell_volume = dx*dy*channel_section;
+      npart0 = n_part;  npart1 = 0;
+      // DEBUG
+      // # # # # #
+      std::cout << " >> check: n_part/channel_volume = " << n_part/channel_volume << std::endl;
+      // # # # # #
       break;
     case 5:     /* Initial liquid layer in the middle, parallel to the x axis */
       std::cout << "### CASE: initial liquid layer in the middle (parallel to the x axis) ###" << std::endl;

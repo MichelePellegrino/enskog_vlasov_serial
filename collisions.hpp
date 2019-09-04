@@ -21,6 +21,14 @@
 #define DEFAULT_ALPHA_2 0.99
 #endif
 
+// #ifndef DEFAULT_ALPHA_3
+// #define DEFAULT_ALPHA_3 1e2
+// #endif
+
+// #ifndef DEFAULT_ALPHA_4
+// #define DEFAULT_ALPHA_4 0.99
+// #endif
+
 /*
 
   USE MEANINGFUL NAMES PLEASE !!!
@@ -36,6 +44,7 @@ private:
   int n_fake = 0;
   int n_real = 0;
   int n_total = 0;
+  int n_fake_idx = 0;
 
   // Vectors for storage
   std::vector<int> n_fake_store;
@@ -73,6 +82,8 @@ private:
   // Controlling number of collisions
   const real_number alpha_1 = DEFAULT_ALPHA_1;
   const real_number alpha_2 = DEFAULT_ALPHA_2;
+  // const real_number alpha_3 = DEFAULT_ALPHA_3;
+  // const real_number alpha_4 = DEFAULT_ALPHA_4;
   void update_majorants(void);
 
   // References from other classes
@@ -106,9 +117,13 @@ public:
   inline const ev_matrix::MaskMatrix<real_number>& get_vrmax11(void) const { return vrmax11; }
   inline const ev_matrix::MaskMatrix<int>& get_n_coll_cell(void) const { return n_coll_cell; }
 
+  inline std::vector<int>& get_n_fake_store(void) { return n_fake_store; }
   inline const std::vector<int>& get_n_fake_store(void) const { return n_fake_store; }
+  inline std::vector<int>& get_n_real_store(void) { return n_real_store; }
   inline const std::vector<int>& get_n_real_store(void) const { return n_real_store; }
+  inline std::vector<int>& get_n_total_store(void) { return n_total_store; }
   inline const std::vector<int>& get_n_total_store(void) const { return n_total_store; }
+  inline std::vector<int>& get_n_out_store(void) { return n_out_store; }
   inline const std::vector<int>& get_n_out_store(void) const { return n_out_store; }
 
 };

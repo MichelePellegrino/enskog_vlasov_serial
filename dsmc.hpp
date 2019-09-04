@@ -15,18 +15,27 @@
 
 #include <memory>
 #include <cassert>
+#include <map>
 
 #ifndef DEFAULT_ITER_THERMO
-#define DEFAULT_ITER_THERMO 10
+#define DEFAULT_ITER_THERMO 20
 #endif
 
 #ifndef DEFAULT_ITER_SAMPLE
-#define DEFAULT_ITER_SAMPLE 100
+#define DEFAULT_ITER_SAMPLE 200
 #endif
 
 #ifndef DEFAULT_DUMMY_ITER
-#define DEFAULT_DUMMY_ITER 500
+#define DEFAULT_DUMMY_ITER 1000
 #endif
+
+#define DENSITY_TAG   0
+#define FORCES_TAG    1
+#define ADVECT_TAG    2
+#define COLLISION_TAG 3
+#define SAMPLING_TAG  4
+
+#define N_TAGS        5
 
 class ConfigurationReader;
 class Boundary;
@@ -78,6 +87,8 @@ private:
   int n_iter_sample = DEFAULT_ITER_SAMPLE;
   bool mean_field_gg;
 
+  std::map < int, std::vector<int> > stored_elapsed_times;
+
 public:
 
   DSMC(const DefaultString&);
@@ -122,6 +133,8 @@ public:
   // Output
   void output_all_samples(void);
   void output_all_samples(real_number);
+  void output_collision_statistics(void);
+  void output_elapsed_times(void);
 
 };
 

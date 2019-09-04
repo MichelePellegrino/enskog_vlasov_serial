@@ -127,8 +127,6 @@ public:
   ConfigurationReader(DSMC*, const DefaultString&);
   ~ConfigurationReader() = default;
 
-  void setup_initial_configuration(void);
-
   inline char get_mean_f_gg() const { return mean_f_gg; }
 
   inline int get_seed() const { return seed; }
@@ -197,6 +195,7 @@ public:
 private:
 
   void read_conf_file( void );
+  void setup_initial_configuration( void );
 
 };
 

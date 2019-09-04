@@ -13,6 +13,7 @@ private:
 
   ev_matrix::MaskMatrix<int> inner_counter;
   ev_matrix::MaskMatrix<real_number> inner_counter_cast;
+  ev_matrix::MaskMatrix<real_number> dt_factor;
 
   ev_matrix::MaskMatrix<real_number> vx_avg;
   ev_matrix::MaskMatrix<real_number> vy_avg;
@@ -29,6 +30,8 @@ private:
   ev_matrix::MaskMatrix<real_number> qz_avg;
 
   ev_matrix::MaskMatrix<real_number> numdens_avg;
+  ev_matrix::MaskMatrix<real_number> fx_avg;
+  ev_matrix::MaskMatrix<real_number> fy_avg;
 
 public:
 
@@ -71,6 +74,10 @@ public:
 
   inline const ev_matrix::MaskMatrix<real_number>& get_numdens_avg(void) const { return numdens_avg; }
   inline ev_matrix::MaskMatrix<real_number>& get_numdens_avg(void) { return numdens_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_forces_x_avg(void) const { return fx_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_forces_x_avg(void) { return fx_avg; }
+  inline const ev_matrix::MaskMatrix<real_number>& get_forces_y_avg(void) const { return fy_avg; }
+  inline ev_matrix::MaskMatrix<real_number>& get_forces_y_avg(void) { return fy_avg; }
 
 };
 

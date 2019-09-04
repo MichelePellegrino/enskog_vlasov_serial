@@ -80,7 +80,6 @@ n_iter_sample ( conf->get_niter_sampling() )
   // # # # # #
   // test_species_info();
   // mean_field->testing_output_kernel_function(500);
-  // mean_field->testing_output_kernel_profile(500, 1.0);
   // test_boundary_info();
   // test_density();
   // test_force_field();
@@ -89,6 +88,7 @@ n_iter_sample ( conf->get_niter_sampling() )
   // test_density();
   // test_collisions();
   // test_sampling();
+  // test_output();
   // # # # # #
 
   std::cout << "### INITIALIZE DSMC SIMULATION ###" << std::endl;
@@ -114,6 +114,8 @@ n_iter_sample ( conf->get_niter_sampling() )
       sampler->average();
       output_all_samples(t);
       sampler->reset();
+      // output_collision_statistics();
+      // output_elapsed_times();
     }
     display_barycentre();
     display_total_speed();
@@ -264,16 +266,31 @@ DSMC::dsmc_iteration
   if ( mean_field_gg )
   {
     std::cout << "    computing force field ..." << std::endl;
+    stopwatch.local_start(FORCES_TAG);
     mean_field->compute_force_field();
+    stopwatch.local_stop(FORCES_TAG);
+    stored_elapsed_times[FORCES_TAG].push_back(stopwatch.get_local_elapsed(FORCES_TAG));
   }
   std::cout << "    propagating ensemble ..." << std::endl;
+  stopwatch.local_start(ADVECT_TAG);
   time_marching->update_ensemble();
+  stopwatch.local_stop(ADVECT_TAG);
+  stored_elapsed_times[ADVECT_TAG].push_back(stopwatch.get_local_elapsed(ADVECT_TAG));
   std::cout << "    computing density ..." << std::endl;
+  stopwatch.local_start(DENSITY_TAG);
   density->perform_density_kernel();
+  stopwatch.local_stop(DENSITY_TAG);
+  stored_elapsed_times[DENSITY_TAG].push_back(stopwatch.get_local_elapsed(DENSITY_TAG));
   std::cout << "    simulating collisions ..." << std::endl;
+  stopwatch.local_start(COLLISION_TAG);
   collision_handler->perform_collision_kernel();
+  stopwatch.local_stop(COLLISION_TAG);
+  stored_elapsed_times[COLLISION_TAG].push_back(stopwatch.get_local_elapsed(COLLISION_TAG));
   std::cout << "    sampling ..." << std::endl;
+  stopwatch.local_start(SAMPLING_TAG);
   sampler->sample();
+  stopwatch.local_stop(SAMPLING_TAG);
+  stored_elapsed_times[SAMPLING_TAG].push_back(stopwatch.get_local_elapsed(SAMPLING_TAG));
 }
 
 void
@@ -301,7 +318,9 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_qx_avg(), "output_files/samples/test_sample_qx.txt");
   output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy.txt");
   output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz.txt");
-  output->output_sample(sampler->get_numdens_avg(), "output_files/samples/test_sample_numdens");
+  output->output_sample(sampler->get_numdens_avg(), "output_files/samples/test_sample_numdens.txt");
+  output->output_sample(sampler->get_forces_x_avg(), "output_files/samples/test_sample_fx.txt");
+  output->output_sample(sampler->get_forces_y_avg(), "output_files/samples/test_sample_fy.txt");
 }
 
 void
@@ -323,4 +342,27 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy", t);
   output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz", t);
   output->output_sample(sampler->get_numdens_avg(), "output_files/samples/test_sample_numdens", t);
+  output->output_sample(sampler->get_forces_x_avg(), "output_files/samples/test_sample_fx", t);
+  output->output_sample(sampler->get_forces_y_avg(), "output_files/samples/test_sample_fy", t);
+}
+
+void
+DSMC::output_collision_statistics
+(void)
+{
+  output->output_vector(collision_handler->get_n_fake_store(), "output_files/collisions_fake.txt");
+  output->output_vector(collision_handler->get_n_real_store(), "output_files/collisions_real.txt");
+  output->output_vector(collision_handler->get_n_total_store(), "output_files/collisions_total.txt");
+  output->output_vector(collision_handler->get_n_out_store(), "output_files/collisions_out.txt");
+}
+
+void
+DSMC::output_elapsed_times
+(void)
+{
+  output->output_vector(stored_elapsed_times[DENSITY_TAG], "output_files/times_density.txt");
+  output->output_vector(stored_elapsed_times[FORCES_TAG], "output_files/times_forces.txt");
+  output->output_vector(stored_elapsed_times[ADVECT_TAG], "output_files/times_advection.txt");
+  output->output_vector(stored_elapsed_times[COLLISION_TAG], "output_files/times_collision.txt");
+  output->output_vector(stored_elapsed_times[SAMPLING_TAG], "output_files/times_sampling.txt");
 }

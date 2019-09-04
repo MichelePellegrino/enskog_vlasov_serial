@@ -153,10 +153,10 @@ namespace ev_matrix {
     typedef typename Base::DynamicMatrix DynamicMatrix;
     int n_halo_x;   // Number of cut-off cells in the x_dir
     int n_halo_y;   // Number of cut-off cells in the y_dir
-    int ux_recv[N_BUF], lx_recv[N_BUF]; // Upper and lower x-indices of receiving blocks
-    int uy_recv[N_BUF], ly_recv[N_BUF]; // Upper and lower y-indices of receiving blocks
-    int ux_send[N_BUF], lx_send[N_BUF]; // Upper and lower x-indices of sending blocks
-    int uy_send[N_BUF], ly_send[N_BUF]; // Upper and lower y-indices of sending blocks
+    int ux_recv[N_BUF], lx_recv[N_BUF];   // Upper and lower x-indices of receiving blocks
+    int uy_recv[N_BUF], ly_recv[N_BUF];   // Upper and lower y-indices of receiving blocks
+    int ux_send[N_BUF], lx_send[N_BUF];   // Upper and lower x-indices of sending blocks
+    int uy_send[N_BUF], ly_send[N_BUF];   // Upper and lower y-indices of sending blocks
     void inline set_schema()
     {
       // OUTER BUFFER [0]
