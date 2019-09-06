@@ -69,8 +69,6 @@ Grid::Grid
       assert(y_max!=boundary->get_Ly2() && "In case of physical b.c. x_min and Ly2 can't be equal");
       y_lim_p = boundary->get_Ly2() - species->get_diam_gw();
     }
-    // Set cell volume (basic case)
-    std::cout << "### SETTING CELL DEPTH ###" << std::endl;
     std::cout << " >> npc = " << conf->get_n_part()/(double)n_cells << std::endl;
     // Initialize centroids
     for ( int i = 0; i < n_cells_x; ++i)  xc[i] = x_min + ( i+0.5 ) * dx;

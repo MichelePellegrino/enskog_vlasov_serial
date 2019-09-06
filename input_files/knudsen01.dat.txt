@@ -21,19 +21,19 @@
 #
 # ** STATO FISICO DELLE PARETI          :
 #
-# Temp. iniziale liquido ==============>.... 0.7000e00
-# Temp. iniziale liquido ==============>.... 0.7000e00
+# Temp. iniziale liquido ==============>.... 0.4500e00
+# Temp. iniziale liquido ==============>.... 0.4500e00
 # DENSITA' DELLA PARETE per campo medio>.... 0.7000e00
 # DENSITA' DELLA PARETE per correlazio >.... 0.7000e00
-# DENSITA' DEL GAS     ================>.... 0.5581e-01
-# DENSITA' DEL LIQUIDO ================>.... 0.0000e00
-# Presenza di strato liquido iniziale==>....       0
-# spessore strato liquido iniziale x ==>.... 0.0000e00
-# spessore strato liquido iniziale y ==>.... 0.1800e02
-# Raggio goccia iniziale liquida     ==>.... 0.3000e02
-# Offset goccia liquida iniziale     ==>.... 0.1400e02
+# DENSITA' DEL GAS     ================>.... 0.2937e-02
+# DENSITA' DEL LIQUIDO ================>.... 0.4080e00
+# Presenza di strato liquido iniziale==>....       6
+# spessore strato liquido iniziale x ==>.... 0.4000e02
+# spessore strato liquido iniziale y ==>.... 0.4000e02
+# Raggio goccia iniziale liquida     ==>.... 0.0000e02
+# Offset goccia liquida iniziale     ==>.... 0.0000e02
 # Number of iterations for thermostat =>....      20
-# Reference temperature for thermostat=>.... 0.7000e00
+# Reference temperature for thermostat=>.... 0.4500e00
 # Keep baricentre fixed (1) or not (0)=>....        0
 # Natura del Bordo x1, parete o libero =>... p
 # Natura del Bordo x2, parete o libero =>... p
@@ -63,34 +63,34 @@
 # VELOCITA' PARETI  3 Y ===============>.... 0.0000e00
 # VELOCITA' PARETI  4 X ===============>.... 0.0000e00
 # VELOCITA' PARETI  4 Y ===============>.... 0.0000e00
-# SEMI-DISTANZA PARETI X1 =============>.... 0.3500e02
-# SEMI-DISTANZA PARETI X2 =============>.... 0.3500e02
-# SEMI-DISTANZA PARETI Y1 =============>.... 0.3500e02
-# SEMI-DISTANZA PARETI Y2 =============>.... 0.3500e02
+# SEMI-DISTANZA PARETI X1 =============>.... 0.4000e02
+# SEMI-DISTANZA PARETI X2 =============>.... 0.4000e02
+# SEMI-DISTANZA PARETI Y1 =============>.... 0.5000e01
+# SEMI-DISTANZA PARETI Y2 =============>.... 0.5000e01
 # INTENSITA' CAMPO ESTERNO(POISEUILLE)=>.... 0.0000e00
 #
 # ** PARAMETRI COMPUTAZIONALI
 #
-# XMIN ================================>.... 0.3500e02
-# XMAX ================================>.... 0.3500e02
-# YMIN ================================>.... 0.3500e02
-# YMAX ================================>.... 0.3500e02
+# XMIN ================================>.... 0.4000e02
+# XMAX ================================>.... 0.4000e02
+# YMIN ================================>.... 0.5000e01
+# YMAX ================================>.... 0.5000e01
 # XEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.4000e01
 # YEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.4000e01
-# NUMERO CELLE DIR. X =================>....      120
-# NUMERO CELLE DIR. Y =================>....      120
-# NUMERO PARTICELLE LIQUIDO ===========>....  150000
+# NUMERO CELLE DIR. X =================>....     2000
+# NUMERO CELLE DIR. Y =================>....      250
+# NUMERO PARTICELLE LIQUIDO ===========>....  5000000
 # mean_vel=0 (0) or /=0 (1)  ==========>            1
 # Restart 0 no 1 yes 2 yes mirror  ====>            0
 # vx_ini ==============================>     0.0000e00
-# vy_ini ==============================>     -0.600e00
+# vy_ini ==============================>     0.0000e00
 # vz_ini ==============================>     0.0000e00
-# TINI ================================>     0.0000e02
+# TINI ================================>     0.0000e00
 # TMAX ================================>     1.0000e03
 # TIM =================================>     2.0000e02
 # Numero intervalli tra tim e tmax ====>           1
 # Partenza del contatore per intervalli>           0
-# DELTAT ==============================>     0.5000e00
+# DELTAT ==============================>     0.2500e-02
 # Qwrite                                            0
 # SEME  ===============================>           76
 # NUMERO NODI VELOCITA' FUNZ. DISTR. ==>          100

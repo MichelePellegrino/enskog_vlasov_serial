@@ -5,7 +5,7 @@ int main()
 
 try
 {
-  DSMC my_dsmc_instanziation("input_files/uniform02.dat.txt");
+  DSMC my_dsmc_instanziation("input_files/knudsen01.dat.txt");
 }
 catch(const char* ex)
 {

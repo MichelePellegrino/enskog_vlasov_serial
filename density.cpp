@@ -129,4 +129,32 @@ DensityKernel::perform_density_kernel
   fill_dummy_field();
   compute_reduced_density();
   compute_avg_density();
+  // DEBUG
+  // # # # # #
+  // print_binned_particles();
+  // print_reduced_numdens();
+  // print_reduced_aveta();
+  // # # # # #
+}
+
+// TESTING
+void
+DensityKernel::print_binned_particles
+(void) const
+{
+  std::cout << " >> binned particles = " << n_part_cell.sum() << std::endl;
+}
+
+void
+DensityKernel::print_reduced_numdens
+(void) const
+{
+  std::cout << " >> max numdens = " << num_dens_cell.maxCoeff() << std::endl;
+}
+
+void
+DensityKernel::print_reduced_aveta
+(void) const
+{
+  std::cout << " >> max aveta = " << average_reduced_density.maxCoeff() << std::endl;
 }

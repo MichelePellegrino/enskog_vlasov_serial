@@ -114,8 +114,10 @@ n_iter_sample ( conf->get_niter_sampling() )
       sampler->average();
       output_all_samples(t);
       sampler->reset();
-      // output_collision_statistics();
-      // output_elapsed_times();
+      /*
+      output_collision_statistics();
+      output_elapsed_times();
+      */
     }
     display_barycentre();
     display_total_speed();
