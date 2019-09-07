@@ -8,8 +8,8 @@ DensityKernel::DensityKernel
 (DSMC* dsmc):
   Motherbase(dsmc),
   reduce_factor( ( ev_const::pi/6.0 ) * ev_utility::power<3>(species->get_diam_fluid()) ),
-  ns_x( (int)( species->get_hdiam_fluid() / ( grid->get_dx() * ev_const::sqrt2) ) ),
-  ns_y( (int)( species->get_hdiam_fluid() / ( grid->get_dy() * ev_const::sqrt2) ) ),
+  ns_x( (int)( species->get_hdiam_fluid() / ( grid->get_dx() * ev_const::sqrt2 ) ) ),
+  ns_y( (int)( species->get_hdiam_fluid() / ( grid->get_dy() * ev_const::sqrt2 ) ) ),
   stencil_x(ns_x, ns_y, 0.0),
   stencil_y(ns_x, ns_y, 0.0),
   weights(ns_x, ns_y, 0.0),
@@ -33,15 +33,21 @@ DensityKernel::DensityKernel
   cum_num( grid->get_n_cells(), 0 ),
   raw_num( grid->get_n_cells(), 0 )
   {
+
     // Initialize weights
     real_number dx = grid->get_dx();
     real_number dy = grid->get_dy();
     real_number sigma = species->get_diam_fluid();
     real_number hsigma = sigma/2.0;
     real_number sum_w = 0.0;
+    real_number ns_x = (int)( hsigma / ( dx * ev_const::sqrt2 ) ) ;
+    real_number ns_y = (int)( hsigma / ( dy * ev_const::sqrt2 ) ) ;
     std::cout << "### COMPUTING AVERAGING WEIGHTS ###" << std::endl;
-    for (int i =-ns_x; i<=ns_x; ++i) {
-      for (int j =-ns_y; j<=ns_y; ++j) {
+
+    for (int i =-ns_x; i<=ns_x; ++i)
+    {
+      for (int j =-ns_y; j<=ns_y; ++j)
+      {
         stencil_x(i, j) = i * dx;
         stencil_y(i, j) = j * dy;
         weights(i,j) = 12.0 / ( ev_const::pi * ev_utility::power<3>(sigma) )
@@ -50,9 +56,11 @@ DensityKernel::DensityKernel
         sum_w = sum_w + weights(i,j);
       }
     }
+
     weights /= sum_w;
     std::cout << "### COMPUTING PARTICLE MAP ###" << std::endl;
     compute_ind_map_part();
+
   }
 
 void

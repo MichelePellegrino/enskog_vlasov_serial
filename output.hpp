@@ -19,6 +19,7 @@ public:
 
   // Testing outputs
   void output_kernel(void);
+  void output_weights(void);
   void output_forces(void);
   void output_density(void);
   void output_majorants(void);

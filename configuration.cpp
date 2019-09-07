@@ -678,8 +678,22 @@ ConfigurationReader::setup_initial_configuration
   std::cout << "### SETTING-UP INITIAL CONFIGURATION ###" << std::endl;
 
   real_number tmp0, tmp1;
+  int npc;
   switch( liq_interf )
   {
+    case -1:    /* TEST: particles equally shared in each cell */
+      std::cout << "### TEST CASE: particles equally shared in each cell ###" << std::endl;
+      npc = n_part / (n_cells_x*n_cells_y);
+      std::cout << " >> " << n_part % (n_cells_x*n_cells_y) << " particles have been forever lost..." << std::endl;
+      n_part = npc * (n_cells_x*n_cells_y);
+      // real_number channel_area = (x_lim_p-x_lim_m) * (y_lim_p-y_lim_m);
+      channel_area = (x_max+x_min) * (y_max+y_min);
+      homogeneous_density = 6.0 * eta_liq0 / (ev_const::pi * diam_fluid*diam_fluid*diam_fluid);
+      channel_volume = n_part / homogeneous_density;
+      channel_section = channel_volume / channel_area;
+      cell_volume = dx*dy*channel_section;
+      npart0 = n_part;  npart1 = 0;
+      break;
     case 0:     /* Uniform phase */
       std::cout << "### CASE: uniform single phase ###" << std::endl;
       // real_number channel_area = (x_lim_p-x_lim_m) * (y_lim_p-y_lim_m);
@@ -689,10 +703,6 @@ ConfigurationReader::setup_initial_configuration
       channel_section = channel_volume / channel_area;
       cell_volume = dx*dy*channel_section;
       npart0 = n_part;  npart1 = 0;
-      // DEBUG
-      // # # # # #
-      std::cout << " >> check: n_part/channel_volume = " << n_part/channel_volume << std::endl;
-      // # # # # #
       break;
     case 5:     /* Initial liquid layer in the middle, parallel to the x axis */
       std::cout << "### CASE: initial liquid layer in the middle (parallel to the x axis) ###" << std::endl;
@@ -729,6 +739,7 @@ ConfigurationReader::setup_initial_configuration
   }
   // DEBUG
   // # # # # #
+  std::cout << " >> check: n_part/channel_volume = " << n_part/channel_volume << std::endl;
   std::cout << " >> n. particles gas = " << npart0 << std::endl;
   std::cout << " >> n. particles fld = " << npart1 << std::endl;
   // # # # # #

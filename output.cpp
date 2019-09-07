@@ -21,6 +21,19 @@ Output::output_kernel
 }
 
 void
+Output::output_weights
+(void)
+{
+
+  std::ofstream file1("output_files/weights.txt");
+
+  // Output potential kernel
+  file1 << density->get_weights();
+  file1.close();
+
+}
+
+void
 Output::output_forces
 (void)
 {

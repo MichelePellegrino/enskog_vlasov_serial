@@ -114,15 +114,12 @@ n_iter_sample ( conf->get_niter_sampling() )
       sampler->average();
       output_all_samples(t);
       sampler->reset();
-      /*
-      output_collision_statistics();
-      output_elapsed_times();
-      */
     }
     display_barycentre();
     display_total_speed();
   }
-  output->output_collisions_stat();
+  output_collision_statistics();
+  output_elapsed_times();
 
   std::cout << "### FINALIZING DSMC SIMULATION ###" << std::endl;
 
@@ -223,6 +220,7 @@ DSMC::test_output
 {
   std::cout << "### TEST: output ###" << std::endl;
   output->output_kernel();
+  output->output_weights();
   output->output_forces();
   output->output_density();
   output->output_majorants();

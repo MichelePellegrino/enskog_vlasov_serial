@@ -24,7 +24,7 @@ private:
 
   // Utilities (maybe reference would be better?)
   real_number reduce_factor;
-  int ns_x, ns_y;
+  real_number ns_x, ns_y;
 
   ev_matrix::SlideMaskMatrix<real_number> stencil_x;
   ev_matrix::SlideMaskMatrix<real_number> stencil_y;
@@ -80,6 +80,8 @@ public:
 
   inline const ev_matrix::MaskMatrix<int>& get_npc(void) const { return n_part_cell; }
   inline const ev_matrix::MaskMatrix<real_number>& get_aveta(void) const { return average_reduced_density; }
+
+  inline const ev_matrix::SlideMaskMatrix<real_number>& get_weights(void) { return weights; }
 
   inline const int iof(int k) const { return cum_num[k]; }
   inline const int ind(int k) const { return idx_map[k]; }
