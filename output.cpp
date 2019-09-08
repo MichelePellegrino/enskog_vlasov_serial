@@ -63,6 +63,10 @@ Output::output_density
   file1 << density->get_npc();
   file1.close();
 
+  // Output no. particles per cell
+  file1 << density->get_npc();
+  file1.close();
+
   // Output averaged reduced density
   file2 << density->get_aveta();
   file2.close();

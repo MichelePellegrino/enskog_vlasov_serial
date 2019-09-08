@@ -4,6 +4,12 @@
 #include "particles.hpp"
 #include "configuration.hpp"
 
+// DEBUG
+// # # # # #
+#include <algorithm>
+#include <set>
+// # # # # #
+
 DensityKernel::DensityKernel
 (DSMC* dsmc):
   Motherbase(dsmc),
@@ -30,7 +36,7 @@ DensityKernel::DensityKernel
   avg_convolutioner( average_reduced_density, weights, reduced_density, 0.0 ),
   idx_cell( ensemble->get_n_particles(), 0 ),
   idx_map( ensemble->get_n_particles(), 0 ),
-  cum_num( grid->get_n_cells(), 0 ),
+  cum_num( grid->get_n_cells()+1, 0 ),
   raw_num( grid->get_n_cells(), 0 )
   {
 
@@ -80,8 +86,8 @@ DensityKernel::binning
   }
   // Setting cumulate density
   int NC = grid->get_n_cells();
-  cum_num.assign(NC, 0);
-  for (int k = 1; k<NC; ++k)
+  cum_num.assign(NC+1, 0);
+  for (int k = 1; k<NC+1; ++k)
     cum_num[k] = cum_num[k-1] + n_part_cell(grid->lexico_inv(k-1).first, grid->lexico_inv(k-1).second);
 }
 
@@ -96,8 +102,8 @@ DensityKernel::compute_ind_map_part
   for (int jp = 0; jp<NP; ++jp)
   {
     jc = idx_cell[jp];
-    raw_num[jc] += 1;
     k = cum_num[jc] + raw_num[jc];
+    raw_num[jc] += 1;
     idx_map[k] = jp;
   }
 }
@@ -165,4 +171,30 @@ DensityKernel::print_reduced_aveta
 (void) const
 {
   std::cout << " >> max aveta = " << average_reduced_density.maxCoeff() << std::endl;
+}
+
+void
+DensityKernel::test_particle_cell_map(void)
+const
+{
+  std::cout << "### TESTING PARTICLE-CELL MAP ###" << std::endl;
+  std::cout << " >> iof(end) = " << cum_num[grid->get_n_cells()-1] << std::endl;
+  int jp;
+  std::vector<int> pt;
+  for ( int n = 0; n<grid->get_n_cells(); ++n )
+  {
+    for ( int k=cum_num[n]; k<cum_num[n+1]; ++k )
+    {
+      jp = idx_map[k];
+      pt.push_back( ensemble->get_p_tag(jp) );
+    }
+  }
+  std::sort(pt.begin(), pt.end());
+  std::cout << " >> pt(beg) = " << pt[0] << std::endl;
+  for ( int p = 1; p<ensemble->get_n_particles(); ++p)
+  {
+    // assert( pt[p]==(pt[p-1]+1) && "Something's wrong with the particle-cell map" );
+    if ( pt[p]!=(pt[p-1]+1) )
+      std::cout << "(" << pt[p-1] << "->" << pt[p] << ")" << std::endl;
+  }
 }

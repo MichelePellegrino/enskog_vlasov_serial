@@ -97,6 +97,11 @@ n_iter_sample ( conf->get_niter_sampling() )
   display_barycentre();
   display_total_speed();
 
+  // DEBUG
+  // # # # # #
+  // density->test_particle_cell_map();
+  // # # # # #
+
   std::cout << "### TESTING DSMC ITERATIONS ###" << std::endl;
   int dummy_max_iter = DEFAULT_DUMMY_ITER;
   for (int t = 0; t <= dummy_max_iter; ++t)

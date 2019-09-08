@@ -86,6 +86,8 @@ public:
   inline int get_cx(int k) const { return particles[k].cell_x; }
   inline int get_cy(int k) const { return particles[k].cell_y; }
 
+  inline int get_p_tag(int k) const { return particles[k].p_tag; }
+
   inline real_number get_bar_x () const { return barycentre_x; }
   inline real_number get_bar_y () const { return barycentre_y; }
 

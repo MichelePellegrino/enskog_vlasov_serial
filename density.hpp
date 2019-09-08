@@ -90,6 +90,7 @@ public:
   void print_binned_particles(void) const;
   void print_reduced_numdens(void) const;
   void print_reduced_aveta(void) const;
+  void test_particle_cell_map(void) const;
 
 };
 
