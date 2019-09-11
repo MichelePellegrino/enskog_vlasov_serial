@@ -25,7 +25,7 @@
 # Temp. iniziale liquido ==============>.... 0.6500e00
 # DENSITA' DELLA PARETE per campo medio>.... 0.6500e00
 # DENSITA' DELLA PARETE per correlazio >.... 0.6500e00
-# DENSITA' DEL GAS     ================>.... 0.3430e-01
+# DENSITA' DEL GAS     ================>.... 0.2725e00
 # DENSITA' DEL LIQUIDO ================>.... 0.0000e00
 # Presenza di strato liquido iniziale==>....       0
 # spessore strato liquido iniziale x ==>.... 0.0000e00
@@ -71,15 +71,15 @@
 #
 # ** PARAMETRI COMPUTAZIONALI
 #
-# XMIN ================================>.... 0.3500e02
-# XMAX ================================>.... 0.3500e02
-# YMIN ================================>.... 0.3500e02
-# YMAX ================================>.... 0.3500e02
+# XMIN ================================>.... 0.6000e01
+# XMAX ================================>.... 0.6000e01
+# YMIN ================================>.... 0.6000e01
+# YMAX ================================>.... 0.6000e01
 # XEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.3000e01
 # YEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.3000e01
-# NUMERO CELLE DIR. X =================>....      250
-# NUMERO CELLE DIR. Y =================>....      250
-# NUMERO PARTICELLE LIQUIDO ===========>....  625000
+# NUMERO CELLE DIR. X =================>....      350
+# NUMERO CELLE DIR. Y =================>....      350
+# NUMERO PARTICELLE LIQUIDO ===========>....   125000
 # mean_vel=0 (0) or /=0 (1)  ==========>            1
 # Restart 0 no 1 yes 2 yes mirror  ====>            0
 # vx_ini ==============================>     0.3000e00
