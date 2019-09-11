@@ -177,6 +177,10 @@ public:
   inline real_number get_dx() const { return dx; }
   inline real_number get_dy() const { return dy; }
 
+  inline real_number get_vx_ini() const { return vx_ini; }
+  inline real_number get_vy_ini() const { return vy_ini; }
+  inline real_number get_vz_ini() const { return vz_ini; }         
+
   // Initial configuration
   inline real_number get_channel_area() const { return channel_area; }
   inline real_number get_channel_area0() const { return channel_area0; }

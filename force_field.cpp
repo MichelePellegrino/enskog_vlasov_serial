@@ -30,8 +30,11 @@ ForceField::ForceField(DSMC* dsmc):
   force_y_convolutioner(force_y_matrix, kernel_matrix_y,
     density->get_num_dens_cell(), 0.0)
 {
-  std::cout << "### COMPUTING POTENTIAL KERNEL MATRIX ###" << std::endl;
-  compute_kernel_matrix();
+  if ( conf->get_mean_f_gg() == 'y' || conf->get_mean_f_gg() == 'Y' )
+  {
+    std::cout << "### COMPUTING POTENTIAL KERNEL MATRIX ###" << std::endl;
+    compute_kernel_matrix();
+  }
   // This one has to be more general:
   // read_kernel_matrix("input_files/mask_matrix.txt");
 }
