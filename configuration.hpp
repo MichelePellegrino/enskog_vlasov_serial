@@ -5,127 +5,156 @@
 #ifndef EV_CONFIGURATION_HPP
 #define EV_CONFIGURATION_HPP
 
+// Includes the base class for the DSMC modules
 #include "motherbase.hpp"
 
+// Includes the headers for data structures
 #include <string>
 #include <array>
 
+// Forward declaration for the DSMC wrapper (redundant: may be deleted)
 class DSMC;
 
 /*! \class ConfigurationReader
- *  \brief Reading configuration file
+ *  \brief Class used for reading configuration file
+ *
+ *  ConfigurationReader reads the configuration files passed as constructor parameter
+ *  to DSMC: it stores all conf. parameters and allows access from other modules
+ *  by getter functions; thid class also set up the cell volume, given the chosen
+ *  configuration of the fluid flow.
  */
 class ConfigurationReader : protected Motherbase
 {
 
 private:
 
-  // File name
-  DefaultString conf_file_name;             // Name of the configuration file
+  // FILE NAME
+  DefaultString conf_file_name;             /*!< Name of the configuration file */
 
-  // Tags
-  DefaultString numtest;                    // ORIGINAL: Numtest (numero sequenziale della prova)
+  // TAGS
+  DefaultString numtest;                    /*!< Test serial number */
 
-  // Molecular properties
-  real_number mass_fluid;                   // ORIGINAL: Massa1 (massa molecolare del liquido)
-  real_number diam_fluid;                   // ORIGINAL: Diamol1 (diametro molecolare del liquido)
-  char pot_gas;                             // ORIGINAL: pot_gas (tipo di potenziale per gas-gas)
-  char mean_f_gg;                           // ORIGINAL: c_med_gg (campo medio gas-gas [yes/no])
-  real_number phi11;                        // ORIGINAL: Phi11 (parametro potenziale PHI11)
-  real_number gamma11;                      // ORIGINAL: Gamma11 (esponente potenziale PHI11 [p])
-  // real_number alpha11;                   // ORIGINAL: alpha11 (    "     "   [e]), unused for the moment
-  // Numero punti per spline pot gas-gas    // UNUSED
-  real_number mass_solid;                   // ORIGINAL: Massa2 (massa molecolare solido)
-  real_number diam_solid;                   // ORIGINAL: Diamol2 (diametro molecolare wall)
-  char pot_wall;                            // ORIGINAL: pot_wall (tipo di potenziale gas-wall)
-  char mean_f_gw;                           // ORIGINAL: c_med_gw (campo medio gas-wall [yes/no])
-  real_number phi12;                        // ORIGINAL: Phi12 (parametro potenziale PHI12)
-  real_number gamma12;                      // ORIGINAL: Gamma12 (esponente potenziale PHI12 [p])
-  // real_number alpha12;                   // ORIGINAL: alpha12 (    "	    "		[e]), unused for the moment
-  // Numero punti per spline pot gas-sol    // UNUSED
+  // MOLECULAR PROPERTIES
+  real_number mass_fluid;                   /*!< Molecular mass of gas particles          */
+  real_number diam_fluid;                   /*!< Cross-section of gas particles           */
+  char pot_gas;                             /*!< Type of gas-gas potential                */
+  char mean_f_gg;                           /*!< Allows ('Y', 'y') gas-gas mean-field     */
+  real_number phi11;                        /*!< Well-depth of gas-gas potential          */
+  real_number gamma11;                      /*!< Exponent of gas-gas potential            */
+  // real_number alpha11;                   /*!< Parameter of gas-gas potential (UNUSED)  */
+  real_number mass_solid;                   /*!< Molecular mass of wall particles         */
+  real_number diam_solid;                   /*!< Cross-section of wall particles          */
+  char pot_wall;                            /*!< Type of gas-wall potential               */
+  char mean_f_gw;                           /*!< Allows ('Y', 'y') gas-wall mean-field    */
+  real_number phi12;                        /*!< Well-depth of gas-wall potential         */
+  real_number gamma12;                      /*!< Exponent of gas-wall potential           */
+  // real_number alpha12;                   /*!< Parameter of gas-wall potential (UNUSED) */
 
-  // Phisical state of fluid / walls
-  real_number T_ini;                        // ORIGINAL: T_ini (temperatura iniziale del liquido)
-  real_number T_ini1;                       // ORIGINAL: T_ini1	---> (?????)
-  real_number eta_w0;                       // ORIGINAL: Etaw0 (densità della parete, per campo medio)
-  real_number eta_w1;                       // ORIGINAL: Etaw1 (densità della parete, per correlazione)
-  real_number eta_liq0;                     // ORIGINAL: Etaliq0 (densità del gas)
-  real_number eta_liq1;                     // ORIGINAL: Etaliq1 (densità della fase liquida)
-  int liq_interf;                           // ORIGINAL: liq_interf	---> (?????)
-  real_number x_liq_interf;		              // ORIGINAL: x_liq_interf ---> (?????)
-  real_number y_liq_interf;			            // ORIGINAL: y_liq_interf ---> (?????)
-  real_number r_liq_interf;				          // ORIGINAL: r_liq_interf ---> (?????)
-  real_number liq_drop_offset;              // ORIGINAL: liq_drop_offset ---> (?????)
-  int niter_thermo;			                    // ORIGINAL: niter_thermo (number of iterations for thermostat)
-  real_number T_ref;					              // ORIGINAL: T_ref (reference temperature thermostat)
-  bool fix_baricentre;				              // ORIGINAL: bari (keep baricentre fixed or not [1/0])
-  std::array<char, 4> wall_cond;            // ORIGINAL: natura del bordo x1
-  bool set_px;                              // ORIGINAL: set_px	(sets/ignore periodicity in mean f x [1/0])
-  bool set_py;                              // ORIGINAL: set_py	(			"		 "		f y [1/0])
-  bool set_eta_px;                          // ORIGINAL: set_eta_px	(sets/ignore periodicity in avdens x [1/0])
-  bool set_eta_py;                          // ORIGINAL: set_eta_py (   "		"		avdens y [1/0])
-  std::array<real_number, 4> T_w;           // ORIGINAL: temperatura parete
-  real_number f_x_1;                        // ORIGINAL: f_x_1 ---> (?????)
-  real_number f_x_2;                        // ORIGINAL: f_x_2 ---> (?????)
-  real_number f_y_1;		                    // ORIGINAL: f_y_1 ---> (?????)
-  real_number f_y_2;			                  // ORIGINAL: f_y_2 ---> (?????)
-  std::array<real_number, 4> p_e;           // ORIGINAL: probabilità di perdita parete
-  std::array<real_number, 4> U_wx;          // ORIGINAL: Uwx (velocità pareti x)
-  std::array<real_number, 4> U_wy;          // ORIGINAL: Uwx (velocità pareti y)
-  real_number L_x_1;	                      // ORIGINAL: Lx1 (semi-distanza pareti x1)
-  real_number L_x_2;		                    // ORIGINAL: Lx2 (   "		"	 x2)
-  real_number L_y_1;			                  // ORIGINAL: Ly1 (   "		"	 y1)
-  real_number L_y_2;				                // ORIGINAL: Ly2 (	 "		"	 y2)
-  real_number F_x_ext;                      // ORIGINAL: Fx ---> (?????)
-  // real_number F_y_ext;                   // ...
+  // PHYSICAL STATE OF FLUID-WALLS
+  real_number T_ini;                        /*!< Initial fluid temperature                              */
+  real_number T_ini1;                       /*!< Initial fluid temperature (UNUSED)                     */
+  real_number eta_w0;                       /*!< Wall reduced density, for mean-field computation       */
+  real_number eta_w1;                       /*!< Wall reduced density, for collisions simulation        */
+  real_number eta_liq0;                     /*!< Reduced density of the gas phase                       */
+  real_number eta_liq1;                     /*!< Reduced density of the liquid phase                    */
+  int liq_interf;                           /*!< Type of initial gas-liquid configuration               */
+  real_number x_liq_interf;		              /*!< Thickness of liquid slab (parallel to x)               */
+  real_number y_liq_interf;			            /*!< Thickness of liquid slab (parallel to y)               */
+  real_number r_liq_interf;				          /*!< Radius of liquid drop                                  */
+  real_number liq_drop_offset;              /*!< Liquid drop offset                                     */
+  int niter_thermo;			                    /*!< Number of thermostat iterations                        */
+  real_number T_ref;					              /*!< Reference temperature for the thermostat               */
+  bool fix_baricentre;				              /*!< Keep baricentre fixed (1) or not (0) (UNUSED)          */
+  std::array<char, 4> wall_cond;            /*!< Nature of boundary conditions                          */
+  bool set_px;                              /*!< Sets (1) or ignore (0) periodicity in mean-f x [1/0])  */
+  bool set_py;                              /*!< Sets (1) or ignore (0) periodicity in mean-f y [1/0])  */
+  bool set_eta_px;                          /*!< Sets (1) or ignore (0) periodicity in avdens x [1/0])  */
+  bool set_eta_py;                          /*!< Sets (1) or ignore (0) periodicity in avdens y [1/0])  */
+  std::array<real_number, 4> T_w;           /*!< Walls temperature                                      */
+  real_number f_x_1;                        /*!< Flux coefficient x1-wall (UNUSED)                      */
+  real_number f_x_2;                        /*!< Flux coefficient x2-wall (UNUSED)                      */
+  real_number f_y_1;		                    /*!< Flux coefficient y1-wall (UNUSED)                      */
+  real_number f_y_2;			                  /*!< Flux coefficient x2-wall (UNUSED)                      */
+  std::array<real_number, 4> p_e;           /*!< Probability of Maxwellian walls                        */
+  std::array<real_number, 4> U_wx;          /*!< X-component of walls velocity                          */
+  std::array<real_number, 4> U_wy;          /*!< Y-component of walls velocity                          */
+  real_number L_x_1;	                      /*!< Distance between walls and x1-wall                     */
+  real_number L_x_2;		                    /*!< Distance between walls and x2-wall                     */
+  real_number L_y_1;			                  /*!< Distance between walls and y1-wall                     */
+  real_number L_y_2;				                /*!< Distance between walls and y2-wall                     */
+  real_number F_x_ext;                      /*!< External field (x-direction)                           */
+  // real_number F_y_ext;                   /*!< External field (y-direction)                           */
 
-  // Computational and numerical parameters
-  // int n_Iw;                              // ORIGINAL: n_Iw (numero punti per spline potenziale gas-wall)
-  // int n_If;                              // ORIGINAL: n_If (numero punti per spline potenziale gas-gas)
-  real_number x_min;                        // ORIGINAL: xmin (...)
-  real_number x_max;			                  // ORIGINAL: xmax (...)
-  real_number y_min;		                    // ORIGINAL: ymin (...)
-  real_number y_max;                        // ORIGINAL: ymax (...)
-  real_number x_extra;                      // ORIGINAL: xextra (troncamento campo medio)
-  real_number y_extra;                      // ORIGINAL: yextra (   "		 "	  )
-  int n_cells_x;                            // ORIGINAL: ncellex (numero celle in dir. x)
-  int n_cells_y;                            // ORIGINAL: ncelley (numero celle in dir. y)
-  int n_part;                               // ORIGINAL: Npart (numero particelle liquido)
-  bool mean_vel;                            // ORIGINAL: mean_vel ---> (?????)
-  bool restart;                             // ORIGINAL: restart ---> (?????)
-  real_number vx_ini;                       // ORIGINAL: vx_ini (...)
-  real_number vy_ini;                       // ORIGINAL: vy_ini (...)
-  real_number vz_ini;                       // ORIGINAL: vz_ini (...)
-  real_number t_ini;		                    // ORIGINAL: Tini	(...)
-  real_number t_max;	                      // ORIGINAL: Tmax	(...)
-  real_number t_im;                         // ORIGINAL: Tim ---> (?????)
-  int nc_out;                               // ORIGINAL: nc_out (numero intervalli tra Tim e Tmax)
-  int iter_out_ini;                         // ORIGINAL: iter_out_ini	---> (?????)
-  real_number delta_t;                      // ORIGINAL: Deltat (time-step)
-  int qwrite;                               // ORIGINAL: qwrite	---> (?????)
-  int seed;                                 // ORIGINAL: Seme (...)
-  int Nv;                                   // ORIGINAL: Nv	---> (?????)
-  int routine_choice;                       // ORIGINAL: routine_choice ---> (?????)
-  int split_type;                           // ORIGINAL: split_type	---> (?????)
-  char c_med_comp_type;                     // ORIGINAL: c_med_comp_type (choice for build_I_matrix routine)
-  bool collstat;                            // ORIGINAL: collstat	(collisions statistics off/on [0/1])
-  int ndom;                                 // ORIGINAL: ndom	(number of subdomains for statistics)
-  int niter_sampling;                       // No. iterations for sampling
+  // COMPUTATIONAL PARAMETERS
+  // int n_Iw;                              /*!< Number of spline points for gw potential (UNUSED)  */
+  // int n_If;                              /*!< Number of spline points for gg potential (UNUSED)  */
+  real_number x_min;                        /*!< Inferior physical grid boundary, x direction       */
+  real_number x_max;			                  /*!< Superior physical grid boundary, x direction       */
+  real_number y_min;		                    /*!< Inferior physical grid boundary, y direction       */
+  real_number y_max;                        /*!< Superior physical grid boundary, y direction       */
+  real_number x_extra;                      /*!< Mean-field cut-off, in x direction                 */
+  real_number y_extra;                      /*!< Mean-field cut-off, in y direction                 */
+  int n_cells_x;                            /*!< Number of cells in x-direction                     */
+  int n_cells_y;                            /*!< Number of cells in y-direction                     */
+  int n_part;                               /*!< Number of particles                                */
+  bool mean_vel;                            /*!< Fix mean velocity (UNUSED)                         */
+  bool restart;                             /*!< Restart from previous configuration (UNUSED)       */
+  real_number vx_ini;                       /*!< Prescribed initial velocity in x-direction         */
+  real_number vy_ini;                       /*!< Prescribed initial velocity in y-direction         */
+  real_number vz_ini;                       /*!< Prescribed initial velocity in z-direction         */
+  real_number t_ini;		                    /*!< Initial time                                       */
+  real_number t_max;	                      /*!< Final time                                         */
+  real_number t_im;                         /*!< Initial time for sampling (UNUSED)                 */
+  int nc_out;                               /*!< Number of intervals [t_ini, t_max] (UNUSED)        */
+  int iter_out_ini;                         /*!< Start counter for outer-samp. iterations (UNUSED)  */
+  real_number delta_t;                      /*!< Time step                                          */
+  int qwrite;                               /*!< Tag for writing macro quantities (UNUSED)          */
+  int seed;                                 /*!< Seed for RNG                                       */
+  int Nv;                                   /*!< Number of nodes for velocity distribution (UNUSED) */
+  int routine_choice;                       /*!< Routine for collisions computation (UNUSED)        */
+  int split_type;                           /*!< Routine for parallel collisions (UNUSED)           */
+  char c_med_comp_type;                     /*!< Routine for mean-field kernel computation (UNUSED) */
+  bool collstat;                            /*!< Output (1) or not (0) collisions statistics        */
+  int ndom;                                 /*!< Number of subdom. for stat. aggregation (UNUSED)   */
+  int niter_sampling;                       /*!< Number of sampling iterations                      */
 
-  // Derived quantities
+  // DERIVED PARAMETERS
+  /*!
+   *  Some numerical parameters have to be derived beforehand, and then passe to the
+   *  classes which need them
+   */
   real_number dx, dy;
 
-  // Initial configuration
+  // INITIAL CONFIGURATION
+  /*!
+   *  ConfigurationReader defines the parameters characterizing the initial configuration
+   *  (in particular: the channel section, cells volume, proportion between the number
+   *  of liquid/gas particles)
+   */
   real_number channel_area, channel_area0, channel_area1;
   real_number homogeneous_density, homogeneous_density0, homogeneous_density1;
   real_number channel_volume, channel_volume0, channel_volume1;
   real_number channel_section, cell_volume;
   int npart0, npart1;
 
+  // PRESCRIBED DENSITY PROFILE IN X (Y) DIRECTION
+  /*!
+   *  It is possible to prescribe a desired density profile in x (y) direction;
+   *  the profile received as input has to be coherent in its nature and its values
+   *  with the values in the conf. file (i.e. liq_interf)
+   */
+  std::string density_profile_file_name;
+  std::vector<real_number> density_profile;
+  std::vector<real_number> npc_fraction;
+
 public:
+
+  // CONSTRUCTOR / DESTRUCTIOR
 
   ConfigurationReader(DSMC*, const DefaultString&);
   ~ConfigurationReader() = default;
+
+  // GETTER METHODS
 
   inline char get_mean_f_gg() const { return mean_f_gg; }
 
@@ -179,9 +208,8 @@ public:
 
   inline real_number get_vx_ini() const { return vx_ini; }
   inline real_number get_vy_ini() const { return vy_ini; }
-  inline real_number get_vz_ini() const { return vz_ini; }         
+  inline real_number get_vz_ini() const { return vz_ini; }
 
-  // Initial configuration
   inline real_number get_channel_area() const { return channel_area; }
   inline real_number get_channel_area0() const { return channel_area0; }
   inline real_number get_channel_area1() const { return channel_area1; }
@@ -196,9 +224,21 @@ public:
   inline int get_npart0() const { return npart0; }
   inline int get_npart1() const { return npart1; }
 
+  inline const std::vector<real_number>& get_density_profile(void) { return density_profile; }
+  inline real_number get_density_profile(int k) { return density_profile[k]; }
+  inline const std::vector<real_number>& get_npc_fraction(void) { return npc_fraction; }
+  inline real_number get_npc_fraction(int k) { return npc_fraction[k]; }
+
 private:
 
+  /*! \fn read_conf_file
+   *  \brief Reads the conf. file and stores all parameters
+   */
   void read_conf_file( void );
+
+  /*! \fn setup_initial_configuration
+   *  \brief Set-up the initial fluid configuration
+   */
   void setup_initial_configuration( void );
 
 };

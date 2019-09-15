@@ -28,9 +28,38 @@ Ensemble::populate
   int npc = n_particles / (nx*ny);
   int k = 0;
 
+  int npc_int = 0;
+  int lost_particles = 0;
+  real_number npc_rem;
+
   switch( conf->get_liq_interf() )
   {
     // See configuration
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
+    case -2:
+      for ( int i = 0; i<n_particles; ++i )
+        particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
+      for ( int i = 0; i<nx; ++i )
+      {
+        npc_int = (int)( conf->get_npc_fraction(i) );
+        npc_rem = conf->get_npc_fraction(i) - (double)(npc_int);
+        for ( int k_loc = 0; k_loc<npc_int; ++k_loc )
+        {
+          particles[k].xp = grid->get_xc(i);
+          k++;
+        }
+        if (rng->sample_uniform() < npc_rem)
+        {
+          particles[k].xp = grid->get_xc(i);
+          k++;
+        }
+      }
+      particles.resize(k);
+      lost_particles = n_particles-k;
+      n_particles = k;
+      std::cout << " >> " << "alas, " << lost_particles << " particles are forever lost..." << std::endl;
+    break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case -1:
       for ( int i = 0; i<nx; ++i )
       {
@@ -45,6 +74,7 @@ Ensemble::populate
         }
       }
     break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case 0:
       for ( int i = 0; i<n_particles; ++i )
       {
@@ -52,6 +82,7 @@ Ensemble::populate
         particles[i].yp = grid->get_y_min() + rng->sample_uniform() * ( grid->get_y_max() - grid->get_y_min() );
       }
       break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case 5:
       for ( int i = 0; i<conf->get_npart1(); ++i )
       {
@@ -66,6 +97,7 @@ Ensemble::populate
         } while( abs( particles[i].yp ) < conf->get_y_liq_interf()/2.0 );
       }
       break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case 6:
       for ( int i = 0; i<conf->get_npart1(); ++i )
       {
@@ -80,8 +112,10 @@ Ensemble::populate
         }   while( abs( particles[i].xp ) < conf->get_x_liq_interf()/2.0 );
       }
       break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     default:
-      std::cerr << "Unrecognized configuration" << std::endl;
+      std::cerr << "[!] UNRECOGNIZED CONFIGURATION" << std::endl;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
   }
 
   for ( int i = 0; i<n_particles; ++i )

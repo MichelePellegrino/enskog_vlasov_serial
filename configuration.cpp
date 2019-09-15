@@ -1,3 +1,7 @@
+/*! \file configuration.cpp
+ *  \brief Source code for configuration reader
+ */
+
 #include "configuration.hpp"
 
 #include <fstream>
@@ -663,7 +667,23 @@ ConfigurationReader::read_conf_file
   ss >> niter_sampling;
   ss.clear(); ss.str(DefaultString());
 
+  getline (fs, line_buffer);                // # Input for initial density profile
+
+  ss << line_buffer;
+  ss.seekg(45);
+  ss >> density_profile_file_name;
+  ss.clear(); ss.str(DefaultString());
+
   fs.close();
+
+  // Reading initial density profile
+  std::ifstream init_den_fs(density_profile_file_name);
+  real_number den_val;
+  while ( init_den_fs >> den_val )
+  {
+    density_profile.push_back(den_val);
+  }
+  init_den_fs.close();
 
   dx = (double)(x_max+x_min) / (double)n_cells_x;
   dy = (double)(y_max+y_min) / (double)n_cells_y;
@@ -679,8 +699,46 @@ ConfigurationReader::setup_initial_configuration
 
   real_number tmp0, tmp1;
   int npc;
+
+  // DEBUG
+  // # # # # #
+  real_number dummy_n = 0;
+  // # # # # #
+
   switch( liq_interf )
   {
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
+    case -2:    /* TEST: prescribed initial density profile along x */
+      std::cout << "### TEST CASE: prescribed initial density profile along x ###" << std::endl;
+      std::cout << " >> reading init. density profile: " << density_profile_file_name << std::endl;
+      assert( density_profile.size() == n_cells_x && "Density profile input and number of cells mismatch" );
+      channel_area0 = (x_max+x_min-x_liq_interf) * (y_max+y_min);
+      channel_area1 = x_liq_interf * (y_max+y_min);
+      homogeneous_density0 = 6.0 * eta_liq0 / (ev_const::pi * diam_fluid*diam_fluid*diam_fluid);
+      homogeneous_density1 = 6.0 * eta_liq1 / (ev_const::pi * diam_fluid*diam_fluid*diam_fluid);
+      tmp0 = 1.0/(homogeneous_density0*channel_area0);
+      tmp1 = 1.0/(homogeneous_density1*channel_area1);
+      npart1 = (int)(n_part*tmp0/(tmp0+tmp1));
+      npart0 = n_part - npart1;
+      channel_volume0 = npart0 / homogeneous_density0;
+      channel_volume1 = npart1 / homogeneous_density1;
+      channel_volume = channel_volume0+channel_volume1;
+      channel_section = channel_volume / (channel_area0+channel_area1);
+      cell_volume = dx*dy*channel_section;
+      for (int i = 0; i<n_cells_x; ++i)
+      {
+        npc_fraction.push_back(density_profile[i]*cell_volume*n_cells_y);
+        // DEBUG
+        // # # # # #
+        dummy_n += density_profile[i]*cell_volume*n_cells_y;
+        // # # # # #
+      }
+      // DEBUG
+      // # # # # #
+      std::cout << " >> TEST: dummy_n = " << dummy_n << std::endl;
+      // # # # # #
+      break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case -1:    /* TEST: particles equally shared in each cell */
       std::cout << "### TEST CASE: particles equally shared in each cell ###" << std::endl;
       npc = n_part / (n_cells_x*n_cells_y);
@@ -694,6 +752,7 @@ ConfigurationReader::setup_initial_configuration
       cell_volume = dx*dy*channel_section;
       npart0 = n_part;  npart1 = 0;
       break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case 0:     /* Uniform phase */
       std::cout << "### CASE: uniform single phase ###" << std::endl;
       // real_number channel_area = (x_lim_p-x_lim_m) * (y_lim_p-y_lim_m);
@@ -704,6 +763,7 @@ ConfigurationReader::setup_initial_configuration
       cell_volume = dx*dy*channel_section;
       npart0 = n_part;  npart1 = 0;
       break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case 5:     /* Initial liquid layer in the middle, parallel to the x axis */
       std::cout << "### CASE: initial liquid layer in the middle (parallel to the x axis) ###" << std::endl;
       channel_area0 = (x_max+x_min) * (y_max+y_min-y_liq_interf);
@@ -716,9 +776,11 @@ ConfigurationReader::setup_initial_configuration
       npart0 = n_part - npart1;
       channel_volume0 = npart0 / homogeneous_density0;
       channel_volume1 = npart1 / homogeneous_density1;
-      channel_section = (channel_volume0+channel_volume1) / (channel_area0+channel_area1);
+      channel_volume = channel_volume0+channel_volume1;
+      channel_section = channel_volume / (channel_area0+channel_area1);
       cell_volume = dx*dy*channel_section;
       break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     case 6:     /* Initial liquid layer in the middle, parallel to the y axis */
       std::cout << "### CASE: initial liquid layer in the middle (parallel to the y axis) ###" << std::endl;
       channel_area0 = (x_max+x_min-x_liq_interf) * (y_max+y_min);
@@ -731,11 +793,14 @@ ConfigurationReader::setup_initial_configuration
       npart0 = n_part - npart1;
       channel_volume0 = npart0 / homogeneous_density0;
       channel_volume1 = npart1 / homogeneous_density1;
-      channel_section = (channel_volume0+channel_volume1) / (channel_area0+channel_area1);
+      channel_volume = channel_volume0+channel_volume1;
+      channel_section = channel_volume / (channel_area0+channel_area1);
       cell_volume = dx*dy*channel_section;
       break;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
     default:
-      std::cerr << "Unrecognized configuration" << std::endl;
+      std::cerr << "[!] UNRECOGNIZED CONFIGURATION" << std::endl;
+    /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
   }
   // DEBUG
   // # # # # #
