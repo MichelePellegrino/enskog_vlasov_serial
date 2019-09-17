@@ -231,12 +231,12 @@ public:
 
 private:
 
-  /*! \fn read_conf_file
+  /*! \fn void read_conf_file( void )
    *  \brief Reads the conf. file and stores all parameters
    */
   void read_conf_file( void );
 
-  /*! \fn setup_initial_configuration
+  /*! \fn void setup_initial_configuration( void )
    *  \brief Set-up the initial fluid configuration
    */
   void setup_initial_configuration( void );

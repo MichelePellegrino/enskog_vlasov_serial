@@ -43,6 +43,8 @@ Ensemble::populate
       {
         npc_int = (int)( conf->get_npc_fraction(i) );
         npc_rem = conf->get_npc_fraction(i) - (double)(npc_int);
+        if ( k+npc_int+1 >= n_particles )
+          particles.resize(k+npc_int+1);
         for ( int k_loc = 0; k_loc<npc_int; ++k_loc )
         {
           particles[k].xp = grid->get_xc(i);

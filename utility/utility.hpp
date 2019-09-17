@@ -11,7 +11,7 @@
 namespace ev_utility
 {
 
-/*! \fn power_n
+/*! \fn inline int power_n(int x, unsigned int n)
  *  \brief Pow function (when n, the exponent, is not known at compile time)
  *
  *  This is surely not the most efficient implementation, but it is ok for our purposes
@@ -44,7 +44,7 @@ template<> struct power_impl<0> {
   }
 };
 
-/*! \fn power
+/*! \fn template<unsigned N, typename T> inline T power(const T &x)
  *  \brief Pow function (when N, the exponent, is known at compile time)
  *
  *  This is surely not the most efficient implementation, but it is ok for our purposes

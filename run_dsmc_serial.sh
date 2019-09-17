@@ -21,7 +21,7 @@
 ####################################################################
 
 source /u/sw/etc/profile
-#module avail
+# module avail
 module load gcc-glibc
 cd /fast-scratch/mpellegrino/dsmc_serial
 mkdir output_files

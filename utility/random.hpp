@@ -51,13 +51,13 @@ public:
   {
     seed = new_seed;
   }
-  /*! \fn sample_uniform
+  /*! \fn real_number sample_uniform (void)
    *  \brief algorithm for sampling a uniform between [0,1]
    *
    *  This is the samplig algorithm to be overridden by derived RNG classes
    */
   virtual real_number sample_uniform (void) = 0;
-  /*! \fn sample_unit_sphere
+  /*! \fn virtual void sample_unit_sphere (real_number& kx, real_number& ky, real_number& kz)
    *  \brief algorithm for sampling the vector k uniformly on a unit sphere
    */
   inline virtual void sample_unit_sphere (real_number& kx, real_number& ky, real_number& kz)
@@ -73,7 +73,8 @@ public:
     ky = ky/phi;
     kz = kz/phi;
   }
-  /*! \fn sample_box_muller
+  /*! \fn virtual void sample_box_muller (real_number mass, real_number ux,
+        real_number uy, real_number t, real_number& vx, real_number& vy, real_number& vz)
    *  \brief Box-Muller algorithm for sampling velocities from a Maxwellian
    */
   inline virtual void sample_box_muller (real_number mass, real_number ux, real_number uy, real_number t,

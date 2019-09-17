@@ -1,3 +1,7 @@
+/*! \file configuration.cpp
+ *  \brief Source code for DSMC class
+ */
+
 #include "dsmc.hpp"
 #include "configuration.hpp"
 #include "boundary.hpp"
@@ -65,6 +69,10 @@ n_iter_thermo ( conf->get_niter_thermo() ),
 n_iter_sample ( conf->get_niter_sampling() )
 {
 
+  /*!
+   *  Establish whether the mean field has to be computed; mean field computation
+   *  is very time consuming: better de-activate the routine if not needed
+   */
   if ( conf->get_mean_f_gg() == 'y' || conf->get_mean_f_gg() == 'Y' )
   {
     mean_field_gg = true;
@@ -76,8 +84,9 @@ n_iter_sample ( conf->get_niter_sampling() )
     std::cout << "### MEAN-FIELD OFF ###" << std::endl;
   }
 
-  // *** PRELIMINARY TESTING ***
-  // # # # # #
+  /*!
+   *  Preliminary tests: comment the ones that are not needed
+   */
   // test_species_info();
   // mean_field->testing_output_kernel_function(500);
   // test_boundary_info();
@@ -89,7 +98,6 @@ n_iter_sample ( conf->get_niter_sampling() )
   // test_collisions();
   // test_sampling();
   // test_output();
-  // # # # # #
 
   std::cout << "### INITIALIZE DSMC SIMULATION ###" << std::endl;
   initialize_simulation();
@@ -133,6 +141,9 @@ n_iter_sample ( conf->get_niter_sampling() )
 
 // TESTING FUNCTIONALITIES
 
+/*! \fn void DSMC::test_boundary_info (void)
+    \brief Outputs all info for numerical parameters characterizing grid and boundary
+*/
 void
 DSMC::test_boundary_info
 (void)
@@ -151,6 +162,9 @@ DSMC::test_boundary_info
   std::cout << "cell_volume = " << grid->get_cell_volume() << std::endl;
 }
 
+/*! \fn void DSMC::test_species_info (void)
+    \brief Outputs all info for particles species
+*/
 void
 DSMC::test_species_info
 (void)
@@ -162,6 +176,9 @@ DSMC::test_species_info
   std::cout << "gamma_g = " << conf->get_gamma11() << std::endl;
 }
 
+/*! \fn void DSMC::test_thermostat (void)
+    \brief Tests a thermostat iteration
+*/
 void
 DSMC::test_thermostat
 (void)
@@ -170,6 +187,9 @@ DSMC::test_thermostat
   thermostat->rescale_velocity();
 }
 
+/*! \fn void DSMC::test_density (void)
+    \brief Tests the density kernel: (1) binning, (2) averaging, (3) reducing
+*/
 void
 DSMC::test_density
 (void)
@@ -182,6 +202,9 @@ DSMC::test_density
   density->compute_avg_density();
 }
 
+/*! \fn void DSMC::test_force_field (void)
+    \brief Tests a mean-field computation
+*/
 void
 DSMC::test_force_field
 (void)
@@ -190,6 +213,9 @@ DSMC::test_force_field
   mean_field->compute_force_field();
 }
 
+/*! \fn void DSMC::test_time_marching (void)
+    \brief Tests an advection iteration
+*/
 void
 DSMC::test_time_marching
 (void)
@@ -198,6 +224,9 @@ DSMC::test_time_marching
   time_marching->update_ensemble();
 }
 
+/*! \fn void DSMC::test_collisions (void)
+    \brief Computes majorants, collision number and simulate collisions (once)
+*/
 void
 DSMC::test_collisions
 (void)
@@ -210,6 +239,9 @@ DSMC::test_collisions
   collision_handler->perform_collisions();
 }
 
+/*! \fn void DSMC::test_sampling (void)
+    \brief Tests sampling and averaging (no output)
+*/
 void
 DSMC::test_sampling
 (void)
@@ -219,6 +251,12 @@ DSMC::test_sampling
   sampler->average();
 }
 
+/*! \fn void DSMC::test_output (void)
+    \brief Tests output
+
+    Outputs (1) pot. kernel, (2) averaging weights, (3) forces (x and y),
+    (4) density quantities, (5) collision majorants, (6) collisions statistics
+*/
 void
 DSMC::test_output
 (void)
@@ -232,6 +270,9 @@ DSMC::test_output
   output->output_collisions();
 }
 
+/*! \fn void DSMC::display_barycentre (void) const
+    \brief Displays the centre of mass of the system
+*/
 void
 DSMC::display_barycentre
 (void) const
@@ -241,6 +282,9 @@ DSMC::display_barycentre
   std::cout << " >> x_b = " << ensemble->get_bar_x() << ";\ty_b = " << ensemble->get_bar_y() << std::endl;
 }
 
+/*! \fn void DSMC::display_total_speed (void) const
+    \brief Displays total velocity (v_x, x_y) of the system
+*/
 void
 DSMC::display_total_speed
 (void) const
@@ -253,6 +297,9 @@ DSMC::display_total_speed
 
 // DSMC SIMULATION STEPS
 
+/*! \fn void DSMC::initialize_simulation (void)
+    \brief Initialize density fielda and computes first estimate of coll. majorants
+*/
 void
 DSMC::initialize_simulation
 (void)
@@ -263,6 +310,9 @@ DSMC::initialize_simulation
   collision_handler->compute_majorants();
 }
 
+/*! \fn void DSMC::dsmc_iteration (void)
+    \brief Perform a dsmc iteration and stores partial times
+*/
 void
 DSMC::dsmc_iteration
 (void)
@@ -302,9 +352,15 @@ void
 DSMC::dsmc_loop
 (void)
 {
-  // *** TO BE CONTINUED ... ***
+  // TO BE CONTINUED ...
 }
 
+
+// OUTPUT FUNCTIONALITIES
+
+/*! \fn void DSMC::output_all_samples (void)
+    \brief Outputs all samples, no time tag
+*/
 void
 DSMC::output_all_samples
 (void)
@@ -328,6 +384,9 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_forces_y_avg(), "output_files/samples/test_sample_fy.txt");
 }
 
+/*! \fn void DSMC::output_all_samples (real_number t)
+    \brief Outputs all samples, with time tag
+*/
 void
 DSMC::output_all_samples
 (real_number t)
@@ -351,6 +410,9 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_forces_y_avg(), "output_files/samples/test_sample_fy", t);
 }
 
+/*! \fn void DSMC::output_collision_statistics (void)
+    \brief Outputs collisions statistics (fake, real, total, out of bound)
+*/
 void
 DSMC::output_collision_statistics
 (void)
@@ -361,6 +423,9 @@ DSMC::output_collision_statistics
   output->output_vector(collision_handler->get_n_out_store(), "output_files/collisions_out.txt");
 }
 
+/*! \fn void DSMC::output_elapsed_times (void)
+    \brief Outputs partial CPU times for each sub-routine
+*/
 void
 DSMC::output_elapsed_times
 (void)

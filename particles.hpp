@@ -41,7 +41,7 @@ private:
   real_number total_speed_x;
   real_number total_speed_y;
 
-  /*! \fn populate
+  /*! \fn void populate(void)
    *  \brief Randomly populate the phase space
    */
   void populate(void);
@@ -52,7 +52,7 @@ public:
   ~Ensemble() = default;
 
   /* *** TESTING *** */
-  /*! \fn test_stream
+  /*! \fn void test_stream(real_number dt = 0.1)
    *  \brief Tests particle streaming: periodic b.c. on every edge
    */
   void test_stream(real_number dt = 0.1);
