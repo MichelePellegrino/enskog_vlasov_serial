@@ -1,3 +1,14 @@
+/*! \file dmsc.hpp
+ *  \brief Header containing the classes for ensemble advection
+ *
+ *  Static-time polimorphism allows the definition of multiple advection schemes
+ *  via template specialization.
+ */
+
+// NB:  no other time marching techniques have been defined apart from the
+//      standard one; it would be better to refactor this class hierarchy.
+
+
 #ifndef EV_ADVECTION_HPP
 #define EV_ADVECTION_HPP
 
@@ -9,6 +20,9 @@
 #include "species.hpp"
 
 
+/*! \class AbstractTimeMarching
+ *  \brief Class containing all data needed by any advection scheme
+ */
 class AbstractTimeMarching : protected Motherbase
 {
 protected:
@@ -35,6 +49,12 @@ public:
 };
 
 
+/*! \class TimeMarching
+ *  \brief Base for advection classes hierarchy
+ *
+ *  This template class needs to be specialized in order to produce a valid time
+ *  -marching scheme.
+ */
 template <MarchingType dummy_rng_type>
 class TimeMarching : public AbstractTimeMarching
 {
@@ -48,15 +68,19 @@ public:
 };
 
 
+/*! \class TimeMarching<Standard>
+ *  \brief Standard advection scheme
+ *
+ *  This is the standard explicit foreard advection scheme adopted by standard
+ *  DSMC simulations.
+ */
 template <>
 class TimeMarching<Standard> : public AbstractTimeMarching
 {
 public:
   TimeMarching<Standard>(DSMC* _dsmc_):
     AbstractTimeMarching(_dsmc_)
-    {
-
-    }
+    { }
   ~TimeMarching<Standard>() = default;
   virtual void update_ensemble() override
   {
