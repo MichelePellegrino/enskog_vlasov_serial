@@ -1,4 +1,4 @@
-/*! \file dmsc.hpp
+/*! \file advection.hpp
  *  \brief Header containing the classes for ensemble advection
  *
  *  Static-time polimorphism allows the definition of multiple advection schemes
