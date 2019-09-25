@@ -143,7 +143,7 @@ enum RngType
 };
 
 /*! \class CustomRngObject
- *  \brief Prototype template function for custom RNG
+ *  \brief Prototype template class for custom RNG
  */
 template <RngType dummy_rng_type>
 class CustomRngObject : public RngAbstract
