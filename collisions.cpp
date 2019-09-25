@@ -1,3 +1,7 @@
+/*! \file collisions.cpp
+ *  \brief Source code for the class implementing collisions simulation
+ */
+
 #include "collisions.hpp"
 #include "grid.hpp"
 #include "particles.hpp"
@@ -201,6 +205,7 @@ CollisionHandler::perform_collisions
           {
             n_real++;
             delta = scaled_k*scalar_prod*species->get_diam_fluid();
+            // delta = rel_vel*scalar_prod;
             ensemble->get_vx(idx_p1) += delta[0];
             ensemble->get_vy(idx_p1) += delta[1];
             ensemble->get_vz(idx_p1) += delta[2];
