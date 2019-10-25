@@ -27,9 +27,9 @@
 # DENSITA' DELLA PARETE per correlazio >.... 0.7000e00
 # DENSITA' DEL GAS     ================>.... 0.2937e-02
 # DENSITA' DEL LIQUIDO ================>.... 0.4080e00
-# Presenza di strato liquido iniziale==>....       6
-# spessore strato liquido iniziale x ==>.... 0.4000e02
-# spessore strato liquido iniziale y ==>.... 0.4000e02
+# Presenza di strato liquido iniziale==>....       -2
+# spessore strato liquido iniziale x ==>.... 0.3000e02
+# spessore strato liquido iniziale y ==>.... 0.3000e02
 # Raggio goccia iniziale liquida     ==>.... 0.0000e02
 # Offset goccia liquida iniziale     ==>.... 0.0000e02
 # Number of iterations for thermostat =>....      20
@@ -65,21 +65,21 @@
 # VELOCITA' PARETI  4 Y ===============>.... 0.0000e00
 # SEMI-DISTANZA PARETI X1 =============>.... 0.4000e02
 # SEMI-DISTANZA PARETI X2 =============>.... 0.4000e02
-# SEMI-DISTANZA PARETI Y1 =============>.... 0.5000e01
-# SEMI-DISTANZA PARETI Y2 =============>.... 0.5000e01
+# SEMI-DISTANZA PARETI Y1 =============>.... 0.1000e02
+# SEMI-DISTANZA PARETI Y2 =============>.... 0.1000e02
 # INTENSITA' CAMPO ESTERNO(POISEUILLE)=>.... 0.0000e00
 #
 # ** PARAMETRI COMPUTAZIONALI
 #
 # XMIN ================================>.... 0.4000e02
 # XMAX ================================>.... 0.4000e02
-# YMIN ================================>.... 0.5000e01
-# YMAX ================================>.... 0.5000e01
+# YMIN ================================>.... 0.1000e02
+# YMAX ================================>.... 0.1000e02
 # XEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.4000e01
 # YEXTRA (TRONCAMENTO CAMPO MEDIO)=====>     0.4000e01
-# NUMERO CELLE DIR. X =================>....     2000
-# NUMERO CELLE DIR. Y =================>....      250
-# NUMERO PARTICELLE LIQUIDO ===========>....  5000000
+# NUMERO CELLE DIR. X =================>....      800
+# NUMERO CELLE DIR. Y =================>....      200
+# NUMERO PARTICELLE LIQUIDO ===========>....  1600000
 # mean_vel=0 (0) or /=0 (1)  ==========>            1
 # Restart 0 no 1 yes 2 yes mirror  ====>            0
 # vx_ini ==============================>     0.0000e00
@@ -100,4 +100,5 @@
 # Collision statistics off (0) on (1) =>     0
 # Number of subdomains for statistics =>     6
 # Number of iterations for sampling ===>     200
+# Input for initial density profile ===>     input_files/profiles/interface_profile.txt
 # **************************** FINE INPUT *************************************

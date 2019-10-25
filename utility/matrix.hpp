@@ -145,6 +145,38 @@ namespace ev_matrix {
   /*! \class HaloMaskMatrix
    *  \brief A mask matrix with the functionality of storing data in a external halo
    */
+
+   /*
+    THIS CLASS HAS TO BE MODIFIED IN CASE OF NON-CONFORMAL DOMAIN DECOMPOSITION
+
+                Receiving:
+               -----------------------------
+              |  0  |        7        |  6  |
+              |-----|-----------------|-----|
+              |     |                 |     |
+              |     |                 |     |
+              |  1  |                 |  5  |
+              |     |                 |     |
+              |     |                 |     |
+              |-----|-----------------|-----|
+              |  2  |        3        |  4  |
+               -----------------------------
+
+               Sending:
+              -----------------------------
+             |     |                 |     |
+             |-----|-----------------|-----|
+             |     |  0  |   7  |  6 |     |
+             |     |-----------------|     |
+             |     |  1  |      |  5 |     |
+             |     |-----------------|     |
+             |     |  2  |   3  |  4 |     |
+             |-----|-----------------|-----|
+             |     |                 |     |
+              -----------------------------
+
+  */
+
   template <class data_type, int StorageOrder = RowMajor>
   class HaloMaskMatrix : public MaskMatrix<data_type, StorageOrder>
   {

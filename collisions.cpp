@@ -187,7 +187,7 @@ CollisionHandler::perform_collisions
         vrmaxnew(i_cell1, j_cell1) = std::max( vrmaxnew(i_cell1, j_cell1), vr );
         vrmaxnew(i_cell2, j_cell2) = std::max( vrmaxnew(i_cell2, j_cell2), vr );
         scalar_prod = rel_vel[0]*scaled_k[0] + rel_vel[1]*scaled_k[1] + rel_vel[2]*scaled_k[2];
-        scalar_prod *= sigma;
+        scalar_prod /= sigma;
         aa = density->get_numdens(i_cell2, j_cell2) * correlation(
           density->get_aveta(grid->lexico_inv(idx_hcell2).first, grid->lexico_inv(idx_hcell2).second) );
         anew(i_cell1, j_cell1) = std::max( anew(i_cell1, j_cell1), aa );
@@ -204,7 +204,7 @@ CollisionHandler::perform_collisions
           if ( rng->sample_uniform() < fk )
           {
             n_real++;
-            delta = scaled_k*scalar_prod*species->get_diam_fluid();
+            delta = scaled_k*scalar_prod/species->get_diam_fluid();
             // delta = rel_vel*scalar_prod;
             ensemble->get_vx(idx_p1) += delta[0];
             ensemble->get_vy(idx_p1) += delta[1];

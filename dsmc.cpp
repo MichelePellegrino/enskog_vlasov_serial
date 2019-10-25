@@ -380,6 +380,7 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy.txt");
   output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz.txt");
   output->output_sample(sampler->get_numdens_avg(), "output_files/samples/test_sample_numdens.txt");
+  output->output_sample(sampler->get_aveta_avg(), "output_files/samples/test_sample_aveta.txt");
   output->output_sample(sampler->get_forces_x_avg(), "output_files/samples/test_sample_fx.txt");
   output->output_sample(sampler->get_forces_y_avg(), "output_files/samples/test_sample_fy.txt");
 }
@@ -406,6 +407,7 @@ DSMC::output_all_samples
   output->output_sample(sampler->get_qy_avg(), "output_files/samples/test_sample_qy", t);
   output->output_sample(sampler->get_qz_avg(), "output_files/samples/test_sample_qz", t);
   output->output_sample(sampler->get_numdens_avg(), "output_files/samples/test_sample_numdens", t);
+  output->output_sample(sampler->get_aveta_avg(), "output_files/samples/test_sample_aveta", t);
   output->output_sample(sampler->get_forces_x_avg(), "output_files/samples/test_sample_fx", t);
   output->output_sample(sampler->get_forces_y_avg(), "output_files/samples/test_sample_fy", t);
 }

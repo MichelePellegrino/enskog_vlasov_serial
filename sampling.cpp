@@ -1,3 +1,7 @@
+/*! \file sampling.cpp
+ *  \brief Source code for sampling class
+ */
+
 #include "sampling.hpp"
 #include "grid.hpp"
 #include "particles.hpp"
@@ -27,6 +31,7 @@ Sampler::Sampler(DSMC* dsmc):
   qz_avg      ( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
 
   numdens_avg ( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
+  aveta_avg   ( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   fx_avg      ( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 ),
   fy_avg      ( 0, grid->get_n_cells_x(), 0, grid->get_n_cells_y(), 0.0 )
 
@@ -52,6 +57,8 @@ Sampler::reset
   qx_avg = 0.0;
   qy_avg = 0.0;
   qz_avg = 0.0;
+  numdens_avg = 0.0;
+  aveta_avg = 0.0;
   fx_avg = 0.0;
   fy_avg = 0.0;
 }
@@ -128,6 +135,7 @@ Sampler::sample
   }
   fx_avg += mean_field->get_force_x();
   fy_avg += mean_field->get_force_y();
+  aveta_avg += density->get_aveta();
 }
 
 void
@@ -156,6 +164,7 @@ Sampler::average
 
   fx_avg /= (double)outer_counter;
   fx_avg /= (double)outer_counter;
+  aveta_avg /= (double)outer_counter;
   numdens_avg = inner_counter_cast / ( (double)outer_counter * grid->get_cell_volume() );
 
   outer_counter = 0;
